@@ -1,14 +1,13 @@
-import { Layout, Row, Col } from "antd"
+import { Col,Layout, Row } from 'antd'
+import React from 'react'
 
-export const Footer = () => {
-  return (
-    <footer>
-        <Layout>
-            <Row>
-                <Col>
-                </Col>
-            </Row>
-        </Layout>
-    </footer>
-  )
-}
+export const Footer = () => (
+  <footer>
+    <Layout>
+      <Row>
+        <Col>
+        </Col>
+      </Row>
+    </Layout>
+  </footer>
+)

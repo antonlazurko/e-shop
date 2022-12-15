@@ -1,0 +1,74 @@
+{
+  "plugins": ["simple-import-sort", "unused-imports"],
+  "extends": [
+    "react-app",
+    "react-app/jest"
+  ],
+  "rules": {
+    "semi": ["warn", "never"],
+    "no-console": "warn",
+    "no-unused-vars": "warn",
+    "prefer-const": "warn",
+    "object-curly-spacing": ["error", "always"],
+    "no-duplicate-imports": ["error", { "includeExports": true }],
+    "jsx-quotes": ["warn", "prefer-single"],
+    "quotes": ["warn", "single"],
+    "max-len": [
+      "warn",
+      {
+        "code": 150
+      }
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "react/jsx-curly-spacing": [
+      "warn",
+      {
+        "allowMultiline": true,
+        "children": {
+          "when": "always"
+        },
+        "spacing": {
+          "objectLiterals": "always"
+        },
+        "when": "always"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/jsx-indent": [
+      "error",
+      2,
+      {
+        "checkAttributes": true,
+        "indentLogicalExpressions": true
+      }
+    ],
+    "react/prop-types": 0,
+    "react/jsx-indent-props": [
+      "error",
+      2
+    ],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false
+      }
+    ],
+    "simple-import-sort/exports": "warn",
+    "simple-import-sort/imports": [
+      "warn"
+    ]
+  }
+}
