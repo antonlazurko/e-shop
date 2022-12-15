@@ -1,10 +1,10 @@
-import { Card,Image,Typography } from 'antd'
+import { Card,Image,Rate,Typography } from 'antd'
 import { Link } from 'react-router-dom'
 const { Meta } = Card
 
 
 export const Product = ({ product }) => {
-  const { name, image, _id, description } = product
+  const { name, image, _id, description, rating, numReviews, price } = product
   return (
     <Card
       hoverable
@@ -17,10 +17,11 @@ export const Product = ({ product }) => {
         display:'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'space-between',
         width: 300,
         margin: 5,
         padding: 5,
-        minHeight: 350
+        minHeight: 400
       } }
     >
       <Link to={ `/product/${_id}` }>
@@ -29,7 +30,11 @@ export const Product = ({ product }) => {
             width: 300,
             textAlign:'center',
             padding: 5,
-          } } title={ name } description={ <Typography style={ { textAlign:'start' } }>{ description }</Typography> }/>
+          } } title={ name } description={ <>
+            <Typography style={ { textAlign:'start' } }>{ description }</Typography>
+            <Rate allowHalf disabled value={ rating } /> from { numReviews } reviews
+          </> }/>
+        <Typography style={ { textAlign:'center' } }>${ price }</Typography>
       </Link>
     </Card>
 
