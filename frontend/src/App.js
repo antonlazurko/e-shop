@@ -1,17 +1,18 @@
 import { Layout } from 'antd'
 import React from 'react'
 
-import { Footer } from './components/Footer'
-import { Header } from './components/Header'
+import { AppFooter } from './components/AppFooter'
+import { AppHeader } from './components/AppHeader'
+const { Content } = Layout
 
 export const App = () => (
   <>
-    <Header/>
-    <main>
-      <Layout>
-        <h1>Hello</h1>
-      </Layout>
-    </main>
-    <Footer/>
+    <Layout>
+      <AppHeader/>
+      <main>
+        <Content>Hello</Content>
+      </main>
+      <AppFooter/>
+    </Layout>
   </>
 )

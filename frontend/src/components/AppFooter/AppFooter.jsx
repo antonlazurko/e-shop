@@ -1,13 +1,15 @@
 import { Col,Layout, Row } from 'antd'
 import React from 'react'
+const { Footer } = Layout
 
-export const Footer = () => (
+export const AppFooter = () => (
   <footer>
-    <Layout>
+    <Footer>
       <Row>
         <Col>
+          Footer
         </Col>
       </Row>
-    </Layout>
+    </Footer>
   </footer>
 )
