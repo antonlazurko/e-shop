@@ -4,7 +4,7 @@ const { Meta } = Card
 
 
 export const Product = ({ product }) => {
-  const { name, image, _id, description, rating, numReviews, price } = product
+  const { name, image, _id, rating,  price } = product
   return (
     <Card
       hoverable
@@ -25,16 +25,15 @@ export const Product = ({ product }) => {
       } }
     >
       <Link to={ `/product/${_id}` }>
+        <Typography.Title level={ 3 } style={ { textAlign:'center' } }>${ price }</Typography.Title>
         <Meta
           style={ {
             width: 300,
             textAlign:'center',
             padding: 5,
-          } } title={ name } description={ <>
-            <Typography style={ { textAlign:'start' } }>{ description }</Typography>
-            <Rate allowHalf disabled value={ rating } /> from { numReviews } reviews
-          </> }/>
-        <Typography style={ { textAlign:'center' } }>${ price }</Typography>
+          } }
+          title={ name }
+          description={ <Rate allowHalf disabled value={ rating } /> }/>
       </Link>
     </Card>
 
