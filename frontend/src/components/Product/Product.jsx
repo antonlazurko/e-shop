@@ -1,4 +1,5 @@
 import { Card,Image,Rate,Typography } from 'antd'
+import { NO_DATA } from 'constants'
 import { Link } from 'react-router-dom'
 
 export const Product = ({ product }) => {
@@ -15,11 +16,13 @@ export const Product = ({ product }) => {
         flexDirection: 'column',
         margin: 5,
         padding: 5,
-        minHeight: 500
+        minHeight: 600
       } }
     >
       <Link to={ `/product/${_id}` }>
-        <Typography.Title disabled={ !price } level={ 3 } style={ { textAlign:'center' } }>{ price ? `${ price }` : 'No Data' }</Typography.Title>
+        <Typography.Title disabled={ !price } level={ 3 } style={ { textAlign:'center' } }>
+          { price ? `$${ price }` : NO_DATA }
+        </Typography.Title>
         <Typography.Title level={ 4 } style={ { textAlign:'center' } }>{ name }</Typography.Title>
         <Typography style={ { textAlign:'center' } }>
           <Rate allowHalf disabled value={ rating } style={ { fontSize: 10 } } />

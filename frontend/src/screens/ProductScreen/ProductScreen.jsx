@@ -1,5 +1,6 @@
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { Button,Card,Col, Image,List,Rate,Row, Tag,Typography } from 'antd'
+import { NO_DATA } from 'constants'
 import products from 'products'
 import { Link ,useParams } from 'react-router-dom'
 
@@ -50,7 +51,7 @@ export const ProductScreen = (props) => {
                   Price:
                 </Typography>
                 <Typography.Text type={ price ? 'default' : 'secondary' }>
-                  { price ? `$${ price }` : 'No Data' }
+                  { price ? `$${ price }` : NO_DATA }
                 </Typography.Text>
               </ListItem>
               <ListItem>
