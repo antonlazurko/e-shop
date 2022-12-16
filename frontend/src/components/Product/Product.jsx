@@ -1,4 +1,5 @@
 import { Card,Image,Rate,Typography } from 'antd'
+import { NO_DATA } from 'constants'
 import { Link } from 'react-router-dom'
 const { Meta } = Card
 
@@ -21,19 +22,17 @@ export const Product = ({ product }) => {
         width: 300,
         margin: 5,
         padding: 5,
-        minHeight: 400
+        minHeight: 600
       } }
     >
       <Link to={ `/product/${_id}` }>
-        <Typography.Title level={ 3 } style={ { textAlign:'center' } }>${ price }</Typography.Title>
-        <Meta
-          style={ {
-            width: 300,
-            textAlign:'center',
-            padding: 5,
-          } }
-          title={ name }
-          description={ <Rate allowHalf disabled value={ rating } /> }/>
+        <Typography.Title disabled={ !price } level={ 3 } style={ { textAlign:'center' } }>
+          { price ? `$${ price }` : NO_DATA }
+        </Typography.Title>
+        <Typography.Title level={ 4 } style={ { textAlign:'center' } }>{ name }</Typography.Title>
+        <Typography style={ { textAlign:'center' } }>
+          <Rate allowHalf disabled value={ rating } style={ { fontSize: 10 } } />
+        </Typography>
       </Link>
     </Card>
 
