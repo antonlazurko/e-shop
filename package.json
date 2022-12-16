@@ -1,0 +1,23 @@
+{
+  "name": "e-shop",
+  "version": "1.0.0",
+  "description": "MERN shopping cart app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonlazurko/e-shop.git"
+  },
+  "author": "Anton Lazurko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antonlazurko/e-shop/issues"
+  },
+  "homepage": "https://github.com/antonlazurko/e-shop#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
