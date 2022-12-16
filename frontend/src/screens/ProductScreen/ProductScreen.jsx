@@ -49,9 +49,9 @@ export const ProductScreen = (props) => {
                 <Typography>
                   Price:
                 </Typography>
-                <Typography>
-                  ${ price }
-                </Typography>
+                <Typography.Text type={ price ? 'default' : 'secondary' }>
+                  { price ? `$${ price }` : 'No Data' }
+                </Typography.Text>
               </ListItem>
               <ListItem>
                 { countInStock > 0 ? <Tag color='success' icon={ <CheckCircleOutlined /> }>

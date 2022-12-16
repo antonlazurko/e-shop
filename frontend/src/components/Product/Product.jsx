@@ -1,7 +1,5 @@
 import { Card,Image,Rate,Typography } from 'antd'
 import { Link } from 'react-router-dom'
-const { Meta } = Card
-
 
 export const Product = ({ product }) => {
   const { name, image, _id, rating,  price } = product
@@ -9,31 +7,23 @@ export const Product = ({ product }) => {
     <Card
       hoverable
       cover={ <Image
-        alt=''
-        width={ '100%' }
+        alt={ name }
         src={ image }
       /> }
       style={ {
         display:'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: 300,
         margin: 5,
         padding: 5,
-        minHeight: 400
+        minHeight: 500
       } }
     >
       <Link to={ `/product/${_id}` }>
-        <Typography.Title level={ 3 } style={ { textAlign:'center' } }>${ price }</Typography.Title>
-        <Meta
-          style={ {
-            width: 300,
-            textAlign:'center',
-            padding: 5,
-          } }
-          title={ name }
-          description={ <Rate allowHalf disabled value={ rating } /> }/>
+        <Typography.Title disabled={ !price } level={ 3 } style={ { textAlign:'center' } }>{ price ? `${ price }` : 'No Data' }</Typography.Title>
+        <Typography.Title level={ 4 } style={ { textAlign:'center' } }>{ name }</Typography.Title>
+        <Typography style={ { textAlign:'center' } }>
+          <Rate allowHalf disabled value={ rating } style={ { fontSize: 10 } } />
+        </Typography>
       </Link>
     </Card>
 

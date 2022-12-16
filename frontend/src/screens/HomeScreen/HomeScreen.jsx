@@ -5,9 +5,9 @@ import products from 'products'
 export const HomeScreen = () => (
   <>
     <h1>Latest products</h1>
-    <Row >
+    <Row>
       { products?.map((product) => (
-        <Col key={ product._id }>
+        <Col span={ 6 }  key={ product._id }>
           <Product product={ product }/>
         </Col>
       )) }
