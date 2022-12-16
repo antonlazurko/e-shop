@@ -1,8 +1,6 @@
 import { Card,Image,Rate,Typography } from 'antd'
 import { NO_DATA } from 'constants'
 import { Link } from 'react-router-dom'
-const { Meta } = Card
-
 
 export const Product = ({ product }) => {
   const { name, image, _id, rating,  price } = product
@@ -10,16 +8,12 @@ export const Product = ({ product }) => {
     <Card
       hoverable
       cover={ <Image
-        alt=''
-        width={ '100%' }
+        alt={ name }
         src={ image }
       /> }
       style={ {
         display:'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: 300,
         margin: 5,
         padding: 5,
         minHeight: 600
