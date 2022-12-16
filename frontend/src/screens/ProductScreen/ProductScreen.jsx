@@ -1,15 +1,23 @@
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { Button,Card,Col, Image,List,Rate,Row, Tag,Typography } from 'antd'
 import { NO_DATA } from 'constants'
-import products from 'products'
+import { useEffect,useState } from 'react'
 import { Link ,useParams } from 'react-router-dom'
+import { ProductService } from 'services/products.service'
 
 const { Item: ListItem } = List
 
-export const ProductScreen = (props) => {
+export const ProductScreen = () => {
+  const [product, setProduct] = useState({})
   const { id } = useParams()
-  const currentProduct = products?.find(product => product._id === id)
-  const { name, image,rating, price , description, countInStock, numReviews } = currentProduct
+  const { name, image,rating, price , description, countInStock, numReviews } = product
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await ProductService.getProductById(id)
+      setProduct(data)
+    }
+    fetchProducts()
+  }, [])
   return (
     <>
       <Link to='/'>Back</Link>

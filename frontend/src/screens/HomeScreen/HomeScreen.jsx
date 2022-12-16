@@ -1,12 +1,15 @@
 import { Col, Row } from 'antd'
 import { Product } from 'components/Product'
 import { mediaQueryies } from 'constants'
-import products from 'products'
+import { useEffect,useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
+import { ProductService } from 'services/products.service'
 
 const { largedesktopOrLaptop, smallDesktopOrLaptop, tablet, mobile } = mediaQueryies
 
 export const HomeScreen = () => {
+  const [products, setProducts] = useState([])
+
   const isLargeDesktopOrLaptop = useMediaQuery({
     query: largedesktopOrLaptop
   })
@@ -34,7 +37,13 @@ export const HomeScreen = () => {
       return 24
     }
   }
-
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await ProductService.getProducts()
+      setProducts(data)
+    }
+    fetchProducts()
+  }, [])
   return(
     <>
       <h1>Latest products</h1>
