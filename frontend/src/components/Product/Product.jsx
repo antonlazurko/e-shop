@@ -10,7 +10,7 @@ export const Product = ({ product }) => {
       hoverable
       cover={ <Image
         alt=''
-        width={ 200 }
+        width={ '100%' }
         src={ image }
       /> }
       style={ {

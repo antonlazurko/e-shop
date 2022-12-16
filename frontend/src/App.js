@@ -1,16 +1,19 @@
 import { Layout } from 'antd'
 import { AppFooter } from 'components/AppFooter'
 import { AppHeader } from 'components/AppHeader'
-import { HomeScreen } from 'screens/HomeScreen'
+import { useRoutes } from 'react-router-dom'
+import  routes  from 'router'
+
 const { Content } = Layout
-export const App = () => (
-  <>
+
+export const App = () => {
+  const routesList = useRoutes(routes)
+  return(
     <Layout>
       <AppHeader/>
       <Content>
-        <HomeScreen/>
+        { routesList }
       </Content>
       <AppFooter/>
     </Layout>
-  </>
-)
+  )}
