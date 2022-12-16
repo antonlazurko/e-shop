@@ -1,5 +1,6 @@
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { Button,Card,Col, Image,List,Rate,Row, Tag,Typography } from 'antd'
+import { Loader } from 'components/Loader'
 import { NO_DATA } from 'constants'
 import { useEffect,useState } from 'react'
 import { Link ,useParams } from 'react-router-dom'
@@ -18,7 +19,7 @@ export const ProductScreen = () => {
     }
     fetchProducts()
   }, [])
-  return (
+  return name ? (
     <>
       <Link to='/'>Back</Link>
       <Row>
@@ -77,5 +78,5 @@ export const ProductScreen = () => {
         </Col>
       </Row>
     </>
-  )
+  ) : <Loader/>
 }
