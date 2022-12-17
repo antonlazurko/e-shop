@@ -1,10 +1,10 @@
 import { Spin } from 'antd'
 
-// import s from './Loader.module.scss'
+import styles from './Loader.module.scss'
 
 const Loader = ({ size = 'large', ...others }) => {
   return (
-    <div { ...others }>
+    <div className={ styles.spin } { ...others }>
       <Spin size={ size } />
     </div>
   )
