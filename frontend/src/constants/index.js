@@ -1,3 +1,4 @@
+export * from './productConstants'
 export const mediaQueryies = {
   largedesktopOrLaptop: '(min-width: 1224px)',
   smallDesktopOrLaptop: '(min-width: 900px) and (max-width: 1223px)',
