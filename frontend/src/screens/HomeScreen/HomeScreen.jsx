@@ -2,14 +2,16 @@ import { Col, Row } from 'antd'
 import { Loader } from 'components/Loader'
 import { Product } from 'components/Product'
 import { mediaQueryies } from 'constants'
-import { useEffect,useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch,useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { ProductService } from 'services/products.service'
+import { listProducts } from 'redux/actions/productActions'
 
 const { largedesktopOrLaptop, smallDesktopOrLaptop, tablet, mobile } = mediaQueryies
 
 export const HomeScreen = () => {
-  const [products, setProducts] = useState([])
+  const dispatch = useDispatch()
+  const { loading, error, products } = useSelector(state => state.productList)
 
   const isLargeDesktopOrLaptop = useMediaQuery({
     query: largedesktopOrLaptop
@@ -39,23 +41,24 @@ export const HomeScreen = () => {
     }
   }
   useEffect(() => {
-    const fetchProducts = async () => {
-      const data = await ProductService.getProducts()
-      setProducts(data)
-    }
-    fetchProducts()
-  }, [])
+    dispatch(listProducts())
+  }, [dispatch])
 
-  return products.length ? (
-    <>
-      <h1>Latest products</h1>
-      <Row>
-        { products?.map((product) => (
-          <Col span={ mediaQueryChecker() }  key={ product._id }>
-            <Product product={ product }/>
-          </Col>
-        )) }
-      </Row>
-    </>
-  ) : <Loader/>
+  return <>
+    <h1>Latest products</h1>
+    { loading ?
+      <Loader/>
+      :
+      error
+        ? <div>{ error }</div>
+        : (
+          <Row>
+            { products?.map((product) => (
+              <Col span={ mediaQueryChecker() }  key={ product._id }>
+                <Product product={ product }/>
+              </Col>
+            )) }
+          </Row>
+        ) }
+  </>
 }
