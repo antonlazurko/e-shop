@@ -1,4 +1,5 @@
 import { Col, Row } from 'antd'
+import { Loader } from 'components/Loader'
 import { Product } from 'components/Product'
 import { mediaQueryies } from 'constants'
 import { useEffect,useState } from 'react'
@@ -44,7 +45,8 @@ export const HomeScreen = () => {
     }
     fetchProducts()
   }, [])
-  return(
+
+  return products.length ? (
     <>
       <h1>Latest products</h1>
       <Row>
@@ -55,5 +57,5 @@ export const HomeScreen = () => {
         )) }
       </Row>
     </>
-  )
+  ) : <Loader/>
 }

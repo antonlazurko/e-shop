@@ -19,7 +19,7 @@ export const Product = ({ product }) => {
         minHeight: 600
       } }
     >
-      <Link to={ `/product/${_id}` }>
+      <Link to={ `/products/${_id}` }>
         <Typography.Title disabled={ !price } level={ 3 } style={ { textAlign:'center' } }>
           { price ? `$${ price }` : NO_DATA }
         </Typography.Title>

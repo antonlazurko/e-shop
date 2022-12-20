@@ -8,7 +8,7 @@ const routes = [{
   ] },
 {
   path: '/',
-  children: [{ path: '/product/:id',
+  children: [{ path: '/products/:id',
     element: <ProductScreen/> }
   ] },
 {

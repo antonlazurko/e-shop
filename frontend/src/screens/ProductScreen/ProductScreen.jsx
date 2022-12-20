@@ -10,16 +10,19 @@ const { Item: ListItem } = List
 
 export const ProductScreen = () => {
   const [product, setProduct] = useState({})
+  const [isLoading, setiIsLoading] = useState(false)
   const { id } = useParams()
   const { name, image,rating, price , description, countInStock, numReviews } = product
   useEffect(() => {
     const fetchProducts = async () => {
+      setiIsLoading(true)
       const data = await ProductService.getProductById(id)
       setProduct(data)
+      setiIsLoading(false)
     }
     fetchProducts()
   }, [])
-  return name ? (
+  return !isLoading ? (
     <>
       <Link to='/'>Back</Link>
       <Row>
