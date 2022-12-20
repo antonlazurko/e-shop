@@ -8,27 +8,15 @@ const orderSchema = mongoose.Schema({
         ref: 'User'
     },
     orderItems: {
-        name: {
-            name: String,
-            required: true,
-        },
-        quantity: {
-            name: Number,
-            required: true,
-        },
-        image: {
-            name: String,
-            required: true,
-        },
-        price: {
-            name: Number,
-            required: true,
-        },
+        name: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        image: { type: String, required: true },
+        price: { type: Number, required: true },
         product: {
-            name: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: 'Product'
-        }
+            ref: 'Product',
+        },
     },
     shipingAddress: {
         address: {
@@ -102,5 +90,5 @@ const orderSchema = mongoose.Schema({
     timestamps: true
 })
 
-const Order = mongoose.Schema.model('Order', orderSchema)
+const Order = mongoose.model('Order', orderSchema)
 export default Order
