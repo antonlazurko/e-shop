@@ -2,15 +2,16 @@ import { CART_ADD_ITEM, } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
 export const addToCart = (id, qty) => async(dispatch, getState) => {
-  const { data } = await ProductService.getProductById(id)
+  const data = await ProductService.getProductById(id)
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
-      product: data.id,
+      product: data._id,
+      name: data.name,
       image: data.image,
       price: data.price,
       countInStock: data.countInStock,
-      quantity: data.quantity
+      qty: qty
     }
   })
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
