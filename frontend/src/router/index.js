@@ -19,7 +19,12 @@ const routes = [{
   ] },
 {
   path: '/',
-  children: [{ path: 'cart/:id',
+  children: [{ path: '/cart',
+    element: <CartScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/cart/:id',
     element: <CartScreen/> }
   ] },
 {
