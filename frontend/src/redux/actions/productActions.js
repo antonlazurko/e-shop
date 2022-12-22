@@ -4,7 +4,7 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
-  PRODUCT_LIST_SUCCESS } from 'constants'
+  PRODUCT_LIST_SUCCESS } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
 

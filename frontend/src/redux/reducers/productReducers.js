@@ -3,7 +3,7 @@ import { PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
-  PRODUCT_LIST_SUCCESS } from 'constants'
+  PRODUCT_LIST_SUCCESS } from 'redux/reduxConstatns'
 
 export const productListReducer = (state = { products: [] }, { type, payload }) => {
   switch (type) {
