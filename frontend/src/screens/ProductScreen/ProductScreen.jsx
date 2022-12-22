@@ -1,22 +1,31 @@
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
-import { Button,Card,Col, Image,List,Rate,Row, Tag,Typography } from 'antd'
+import { Button,Card, Col, Image,List,Rate,Row, Select,Tag,Typography } from 'antd'
 import { Loader } from 'components/Loader'
 import { NO_DATA } from 'constants'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { Link ,useParams } from 'react-router-dom'
+import { Link ,useNavigate,useParams } from 'react-router-dom'
 import { listProductDetails } from 'redux/actions/productActions'
 
 const { Item: ListItem } = List
 
 export const ProductScreen = () => {
+  const { id } = useParams()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { loading, error, product } = useSelector(state => state.productDetails)
-  const { id } = useParams()
+
   const { name, image,rating, price , description, countInStock, numReviews } = product
+  const [qty, setQty] = useState(countInStock && 1)
+
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?qty=${qty}`)
+  }
+
   useEffect(() => {
     dispatch(listProductDetails(id))
   }, [dispatch, id])
+
   return <>
     <Link to='/'>Back</Link>
     { loading ?
@@ -73,8 +82,24 @@ export const ProductScreen = () => {
                       Out of stock
                     </Tag> }
                   </ListItem>
+                  { countInStock > 0 && <ListItem>
+                    <Row>
+                      <Col>
+                        Quantity
+                      </Col>
+                      <Col>
+                        <Select
+                          defaultValue={ 1 }
+                          onChange={ (value) => setQty(value) }
+                          options={ [...Array(countInStock)?.keys()].map((key) => ({ label: key + 1, value: key + 1 })) }>
+                        </Select>
+                      </Col>
+                    </Row>
+                  </ListItem> }
                   <ListItem>
-                    <Button disabled={ !countInStock }>Add to Cart</Button>
+                    <Button
+                      onClick={ addToCartHandler }
+                      disabled={ !countInStock }>Add to Cart</Button>
                   </ListItem>
                 </List>
               </Card>

@@ -1,3 +1,4 @@
+import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
 import { NotFoundScreen } from 'screens/NotFoundScreen'
 import { ProductScreen } from 'screens/ProductScreen'
@@ -15,6 +16,11 @@ const routes = [{
   path: '/',
   children: [{ path: '/404',
     element: <NotFoundScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: 'cart/:id',
+    element: <CartScreen/> }
   ] },
 {
   path: '/',
