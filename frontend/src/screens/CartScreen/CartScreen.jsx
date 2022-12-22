@@ -3,7 +3,7 @@ import { Button, Card,Col, Image,List,Row ,Select,Typography } from 'antd'
 import { useEffect,useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate,useParams } from 'react-router-dom'
-import { addToCart } from 'redux/actions/cartActions'
+import { addToCart, removeFromCart } from 'redux/actions/cartActions'
 
 const { Item } = List
 
@@ -19,7 +19,7 @@ export const CartScreen = () => {
   const dispatch = useDispatch()
   const { cartItems } = useSelector(({ cart }) => cart)
   const removeFromCartHandler = (id) => {
-
+    dispatch(removeFromCart(id))
   }
   const checkoutHendler = () => {
     navigate('/login?redirect=shipping')

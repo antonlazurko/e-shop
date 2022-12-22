@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM } from 'redux/reduxConstatns'
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from 'redux/reduxConstatns'
 
 export const cartReducer = (state = { cartItems: [] }, { type, payload }) => {
   switch (type) {
@@ -16,11 +16,11 @@ export const cartReducer = (state = { cartItems: [] }, { type, payload }) => {
         cartItems:[...state.cartItems, item]
       }
     }
-    //   case CART_REMOVE_ITEM:
-    //     return {
-    //       loading: false,
-    //       products: payload
-    //     }
+  case CART_REMOVE_ITEM:
+    return {
+      ...state,
+      cartItems:state.cartItems.filter(({ product }) => product !== payload )
+    }
   default:
     return state
   }
