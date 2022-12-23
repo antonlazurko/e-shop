@@ -39,7 +39,7 @@ export const CartScreen = () => {
         Your cart is empty
         <Link to='/'>Go back</Link></Typography> }
       { cartItems?.length && <List>
-        { cartItems.map(({ product,name, image,price,countInStock, qty }) => (
+        { cartItems.map(({ product, name, image, price, countInStock, qty }) => (
           <Item key={ product }>
             <Row>
               <Col>
@@ -49,12 +49,16 @@ export const CartScreen = () => {
                   src={ image }
                 />
               </Col>
-              <Col><Link to={ `/products/${product}` }>{ name }</Link></Col>
-              <Col><Typography>{ price }</Typography></Col>
+              <Col>
+                <Link to={ `/products/${product}` }>{ name }</Link>
+              </Col>
+              <Col>
+                <Typography>{ price }</Typography>
+              </Col>
               <Col>
                 <Select
-                  value={ qty }
-                  onChange={ (value) => dispatch(addToCart(product,+value)) }
+                  defaultValue={ qty }
+                  onChange={ (value) => dispatch(addToCart(product, value)) }
                   options={ [...Array(countInStock)?.keys()].map((key) => ({ label: key + 1, value: key + 1 })) }>
                 </Select>
               </Col>
