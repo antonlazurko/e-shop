@@ -2,10 +2,16 @@ import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
 import { NotFoundScreen } from 'screens/NotFoundScreen'
 import { ProductScreen } from 'screens/ProductScreen'
+import { UserLoginScreen } from 'screens/UserLoginScreen'
 const routes = [{
   path: '/',
   children: [{ path: '/',
     element: <HomeScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/login',
+    element: <UserLoginScreen/> }
   ] },
 {
   path: '/',

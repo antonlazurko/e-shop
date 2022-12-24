@@ -21,7 +21,7 @@ export const CartScreen = () => {
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
   }
-  const checkoutHendler = () => {
+  const checkoutHandler = () => {
     navigate('/login?redirect=shipping')
   }
 
@@ -78,7 +78,7 @@ export const CartScreen = () => {
             <Typography>Total price ${ cartItems.reduce((acc, item) => acc + item.price, 0)?.toFixed(2) }</Typography>
           </Item>
           <Item>
-            <Button disabled={ !cartItems.length } onClick={ checkoutHendler }>Proceed to checkout</Button>
+            <Button disabled={ !cartItems.length } onClick={ checkoutHandler }>Proceed to checkout</Button>
           </Item>
         </List>
       </Card>
