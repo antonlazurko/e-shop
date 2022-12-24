@@ -3,6 +3,7 @@ import { HomeScreen } from 'screens/HomeScreen'
 import { NotFoundScreen } from 'screens/NotFoundScreen'
 import { ProductScreen } from 'screens/ProductScreen'
 import { UserLoginScreen } from 'screens/UserLoginScreen'
+import { UserRegisterScreen } from 'screens/UserRegisterScreen'
 const routes = [{
   path: '/',
   children: [{ path: '/',
@@ -12,6 +13,11 @@ const routes = [{
   path: '/',
   children: [{ path: '/login',
     element: <UserLoginScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/register',
+    element: <UserRegisterScreen/> }
   ] },
 {
   path: '/',

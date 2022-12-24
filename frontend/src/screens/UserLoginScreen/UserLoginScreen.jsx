@@ -17,8 +17,7 @@ export const UserLoginScreen = () => {
 
   const dispatch = useDispatch()
 
-  const userLogin = useSelector(state => state.userLogin)
-  const { loading, error, userInfo } = userLogin
+  const { loading, error, userInfo } = useSelector(state => state.userLogin)
 
   const onFormSubmit = (value) => {
     dispatch(login(email, password))
