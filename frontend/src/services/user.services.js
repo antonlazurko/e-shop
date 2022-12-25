@@ -6,5 +6,8 @@ export const UserService = {
   },
   async userRegister(name, email, password, config){
     return axios.post('users', { name, email, password }, config)
+  },
+  async getUserDetails(id, config){
+    return axios.get(`users/${id}`, config)
   }
 }

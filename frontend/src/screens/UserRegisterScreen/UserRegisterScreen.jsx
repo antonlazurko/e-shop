@@ -9,13 +9,12 @@ const { Item } = Form
 
 export const UserRegisterScreen = () => {
   const dispatch = useDispatch()
-  //   dispatch(logout())
+  const navigate = useNavigate()
   const [form] = Form.useForm()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const navigate = useNavigate()
 
   const redirect = '/'
   const { loading, error, userInfo } = useSelector(state => state.userRegister)
@@ -82,7 +81,7 @@ export const UserRegisterScreen = () => {
       <Input.Password placeholder='Confirm password' value={ confirmPassword } onChange={ (e) => setConfirmPassword(e.target.value) }/>
     </Item>
     <Item >
-      <Button htmlType='submit'>Submit</Button>
+      <Button htmlType='submit'>Register</Button>
     </Item>
     <Row>
       <Col>
