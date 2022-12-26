@@ -1,9 +1,9 @@
-import { Button, Col,Form, Input, Row,Typography  } from 'antd'
+import { Button, Col,Form, Input, notification,Row,Typography  } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect,useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getUserDetails } from 'redux/actions/userActions'
+import { getUserDetails, updateUserProfile } from 'redux/actions/userActions'
 
 const { Item } = Form
 
@@ -11,17 +11,26 @@ export const ProfileScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const password = Form.useWatch('password', form)
 
   const { userInfo } = useSelector(state => state.userLogin)
   const { loading, error, user } = useSelector(state => state.userDetails)
+  const { success } = useSelector(state => state.userUpdateProfile)
 
   const onFormSubmit = () => {
-    // dispatch(getUserDetails(id))
+    const { name, email, password } = form.getFieldsValue()
+    if(name ===user.name && email ===user.email && !password){
+      notification.info({
+        message: 'Nothing changed!'
+      })
+      return
+    }
+    dispatch(updateUserProfile({
+      id: user._id,
+      name,
+      email,
+      password
+    }))
   }
 
   useEffect(() => {
@@ -31,8 +40,10 @@ export const ProfileScreen = () => {
       if (!user?.name) {
         dispatch(getUserDetails('profile'))
       }else{
-        setName(user.name)
-        setEmail(user.email)
+        form.setFieldsValue({
+          name: user.name,
+          email: user.email
+        })
       }
     }
   }, [userInfo, navigate, dispatch, user])
@@ -48,18 +59,24 @@ export const ProfileScreen = () => {
           <Col span={ 9 }>
             <Typography>Update details</Typography>
             <Form form={ form }
+              name='update-form'
               onFinish={ onFormSubmit }>
-              <Item label='Name:'>
-                <Input placeholder='Name' value={ name } onChange={ (e) => setName(e.target.value) }/>
+              <Item name= { 'name' } label='Name:'>
+                <Input/>
               </Item>
-              <Item label='Email:'>
-                <Input placeholder='Email' value={ email } onChange={ (e) => setEmail(e.target.value) }/>
+              <Item name= { 'email' } label='Name:' rules={ [
+                {
+                  type: 'email',
+                  message: 'Please input correct email!'
+                },
+              ] }>
+                <Input/>
               </Item>
               <Item
                 label='Password:' name='password'>
-                <Input.Password placeholder='Password' value={ password } onChange={ (e) => setPassword(e.target.value) }/>
+                <Input.Password placeholder='Password'/>
               </Item>
-              { password && <Item
+              { !!password && <Item
                 label='Confirm password:'
                 name='confirmPassword'
                 rules={ [
@@ -76,7 +93,7 @@ export const ProfileScreen = () => {
                     },
                   }),
                 ] }>
-                <Input.Password placeholder='Confirm password' value={ confirmPassword } onChange={ (e) => setConfirmPassword(e.target.value) }/>
+                <Input.Password placeholder='Confirm password'/>
               </Item> }
               <Item>
                 <Button htmlType='submit'>

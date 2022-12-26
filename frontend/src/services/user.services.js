@@ -9,5 +9,8 @@ export const UserService = {
   },
   async getUserDetails(id, config){
     return axios.get(`users/${id}`, config)
+  },
+  async updateUserProfile(user, config){
+    return axios.put('users/profile', user,  config)
   }
 }

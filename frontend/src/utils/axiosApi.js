@@ -33,8 +33,8 @@ axios.interceptors.response.use(
     if (error?.data) {
       errorObj = {
         ...errorObj,
-        status: error?.data?.status,
-        title: error?.data?.title,
+        status: error?.status,
+        title: error?.statusText,
       }
       if (error?.data?.message) {
         errorObj.message = error?.data?.message
