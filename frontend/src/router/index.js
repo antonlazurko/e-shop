@@ -2,10 +2,28 @@ import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
 import { NotFoundScreen } from 'screens/NotFoundScreen'
 import { ProductScreen } from 'screens/ProductScreen'
+import { ProfileScreen } from 'screens/ProfileScreen'
+import { UserLoginScreen } from 'screens/UserLoginScreen'
+import { UserRegisterScreen } from 'screens/UserRegisterScreen'
 const routes = [{
   path: '/',
   children: [{ path: '/',
     element: <HomeScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/login',
+    element: <UserLoginScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/register',
+    element: <UserRegisterScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/profile',
+    element: <ProfileScreen/> }
   ] },
 {
   path: '/',
