@@ -1,9 +1,11 @@
-import {  Button, Form, Input,InputNumber } from 'antd'
+import {  Button, Form, Input,InputNumber, Typography } from 'antd'
+import { CheckoutSteps } from 'components/CheckoutSteps'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveShippingAddress } from 'redux/actions/cartActions'
 
 const { Item } = Form
+
 export const ShippingScreen = () => {
   const navigate = useNavigate()
   const { shippingAddress } = useSelector(state => state?.cart)
@@ -15,7 +17,9 @@ export const ShippingScreen = () => {
     navigate('/payment')
   }
 
-  return (
+  return (<>
+    <CheckoutSteps step1 step2/>
+    <Typography>SHIPPING</Typography>
     <Form form={ form } onFinish={ formSubmit }
       initialValues={ shippingAddress }>
       <Item name='country' label='Country:'rules={ [
@@ -53,5 +57,6 @@ export const ShippingScreen = () => {
       </Item>
       <Button htmlType='submit'>Submit Address</Button>
     </Form>
+  </>
   )
 }
