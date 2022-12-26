@@ -1,6 +1,7 @@
 import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
 import { NotFoundScreen } from 'screens/NotFoundScreen'
+import { PaymentScreen } from 'screens/PaymentScreen'
 import { ProductScreen } from 'screens/ProductScreen'
 import { ProfileScreen } from 'screens/ProfileScreen'
 import { ShippingScreen } from 'screens/ShippingScreen'
@@ -50,6 +51,11 @@ const routes = [{
   path: '/',
   children: [{ path: '/shipping',
     element: <ShippingScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/payment',
+    element: <PaymentScreen/> }
   ] },
 {
   path: '/',

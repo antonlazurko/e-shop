@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM,CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS } from 'redux/reduxConstatns'
+import { CART_ADD_ITEM,CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD_ADDRESS,CART_SAVE_SHIPPING_ADDRESS } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
 export const addToCart = (id, qty) => async(dispatch, getState) => {
@@ -30,4 +30,11 @@ export const saveShippingAddress = (addressData) => async(dispatch, getState) =>
     payload: addressData
   })
   localStorage.setItem('shippingAddress', JSON.stringify(addressData))
+}
+export const savePaymentMethod = ({ paymentMethod }) => async(dispatch) => {
+  dispatch({
+    type: CART_SAVE_PAYMENT_METHOD_ADDRESS,
+    payload: paymentMethod
+  })
+  localStorage.setItem('paymentMethod', JSON.stringify(paymentMethod))
 }
