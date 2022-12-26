@@ -1,12 +1,13 @@
+import { lazy } from 'react'
 import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
-import { NotFoundScreen } from 'screens/NotFoundScreen'
 import { PaymentScreen } from 'screens/PaymentScreen'
 import { ProductScreen } from 'screens/ProductScreen'
 import { ProfileScreen } from 'screens/ProfileScreen'
 import { ShippingScreen } from 'screens/ShippingScreen'
 import { UserLoginScreen } from 'screens/UserLoginScreen'
 import { UserRegisterScreen } from 'screens/UserRegisterScreen'
+const NotFoundScreen = lazy(() =>import('screens/NotFoundScreen'))
 const routes = [{
   path: '/',
   children: [{ path: '/',

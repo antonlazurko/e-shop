@@ -1,6 +1,6 @@
 import { Alert,Button, Col,Form, Input, notification,Row,Typography  } from 'antd'
 import { Loader } from 'components/Loader'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getUserDetails, updateUserProfile } from 'redux/actions/userActions'
@@ -13,7 +13,7 @@ export const ProfileScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-  const password = Form.useWatch('password', form)
+  const [password, setPassword] = useState('')
 
   const { userInfo } = useSelector(state => state.userLogin)
   const { loading, error, user } = useSelector(state => state.userDetails)
@@ -21,7 +21,7 @@ export const ProfileScreen = () => {
 
   const onFormSubmit = () => {
     const { name, email, password } = form.getFieldsValue()
-    if(name ===user.name && email ===user.email && !password){
+    if(name === user.name && email === user.email && !password){
       notification.info({
         message: 'Nothing changed!'
       })
@@ -79,7 +79,7 @@ export const ProfileScreen = () => {
               </Item>
               <Item
                 label='Password:' name='password'>
-                <Input.Password placeholder='Password'/>
+                <Input placeholder='Password' onChange={ e => setPassword(e.target.value) }/>
               </Item>
               { !!password && <Item
                 label='Confirm password:'
