@@ -33,9 +33,7 @@ export const UserRegisterScreen = () => {
     <Item name='name' label='Name:' rules={ [
       {
         required: true,
-        type: 'name',
         message: 'Please input your name!',
-
       },
     ] }>
       <Input placeholder='Name' value={ name } onChange={ (e) => setName(e.target.value) }/>

@@ -17,9 +17,12 @@ const reducer = combineReducers({
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
 const userInfoFromStorage = localStorage.getItem('userInfo')
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
 
 const initialState = {
-  cart: { cartItems: cartItemsFromStorage ? JSON.parse(cartItemsFromStorage) : [] },
+  cart: {
+    cartItems: cartItemsFromStorage ? JSON.parse(cartItemsFromStorage) : [],
+    shippingAddress: shippingAddressFromStorage ? JSON.parse(shippingAddressFromStorage) : {} },
   userLogin: { userInfo: userInfoFromStorage ? JSON.parse(userInfoFromStorage) : null },
 }
 
