@@ -1,9 +1,11 @@
-import { Button, Col,Form, Input, notification,Row,Typography  } from 'antd'
+import { Alert,Button, Col,Form, Input, notification,Row,Typography  } from 'antd'
 import { Loader } from 'components/Loader'
-import { useEffect,useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getUserDetails, updateUserProfile } from 'redux/actions/userActions'
+import { USER_UPDATE_PROFILE_RESET } from 'redux/reduxConstatns'
+
 
 const { Item } = Form
 
@@ -37,7 +39,8 @@ export const ProfileScreen = () => {
     if(!userInfo){
       navigate('/login')
     } else {
-      if (!user?.name) {
+      if (!user?.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
       }else{
         form.setFieldsValue({
@@ -46,7 +49,7 @@ export const ProfileScreen = () => {
         })
       }
     }
-  }, [userInfo, navigate, dispatch, user])
+  }, [userInfo, navigate, dispatch, user, form, success])
 
 
   return loading ?
@@ -58,6 +61,8 @@ export const ProfileScreen = () => {
         <Row>
           <Col span={ 9 }>
             <Typography>Update details</Typography>
+            { success && <Alert closable={ true } banner={ true } message='Profile Updated' type='success' /> }
+            { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
             <Form form={ form }
               name='update-form'
               onFinish={ onFormSubmit }>

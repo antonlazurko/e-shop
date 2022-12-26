@@ -1,4 +1,4 @@
-import { Button, Col,Form, Input,Row } from 'antd'
+import { Alert, Button, Col,Form, Input,Row } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect,useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
@@ -56,6 +56,7 @@ export const UserLoginScreen = () => {
     <Item >
       <Button htmlType='submit'>Submit</Button>
     </Item>
+    { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
     <Row>
       <Col>
         New Customer?

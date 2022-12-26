@@ -1,4 +1,4 @@
-import { Button, Col,Form, Input,Row } from 'antd'
+import { Alert, Button, Col,Form, Input,Row } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect,useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
@@ -83,6 +83,7 @@ export const UserRegisterScreen = () => {
     <Item >
       <Button htmlType='submit'>Register</Button>
     </Item>
+    { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
     <Row>
       <Col>
         Have an Account?
