@@ -22,7 +22,7 @@ export const UserRegisterScreen = () => {
 
   const { loading, error, userInfo } = useSelector(state => state.userRegister)
 
-  const onFormSubmit = (value) => {
+  const formSubmitHandler = (value) => {
     dispatch(register(name, email, password))
   }
 
@@ -32,7 +32,7 @@ export const UserRegisterScreen = () => {
     }
   }, [userInfo, navigate, redirect])
   return loading ? <Loader/> : <Form form={ form }
-    onFinish={ onFormSubmit }>
+    onFinish={ formSubmitHandler }>
     <Item name='name' label='Name:' rules={ [
       {
         required: true,

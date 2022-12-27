@@ -12,7 +12,7 @@ export const ShippingScreen = () => {
   const dispatch = useDispatch()
   const [form] = Form.useForm()
 
-  const formSubmit = (value) => {
+  const formSubmitHandler = (value) => {
     dispatch(saveShippingAddress({ ...value }))
     navigate('/payment')
   }
@@ -20,7 +20,7 @@ export const ShippingScreen = () => {
   return (<>
     <CheckoutSteps step1 step2/>
     <Typography>SHIPPING</Typography>
-    <Form form={ form } onFinish={ formSubmit }
+    <Form form={ form } onFinish={ formSubmitHandler }
       initialValues={ shippingAddress }>
       <Item name='country' label='Country:'rules={ [
         {

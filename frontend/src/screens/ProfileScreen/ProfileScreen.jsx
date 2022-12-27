@@ -19,7 +19,7 @@ export const ProfileScreen = () => {
   const { loading, error, user } = useSelector(state => state.userDetails)
   const { success } = useSelector(state => state.userUpdateProfile)
 
-  const onFormSubmit = () => {
+  const formSubmitHandler = () => {
     const { name, email, password } = form.getFieldsValue()
     if(name === user.name && email === user.email && !password){
       notification.info({
@@ -65,7 +65,7 @@ export const ProfileScreen = () => {
             { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
             <Form form={ form }
               name='update-form'
-              onFinish={ onFormSubmit }>
+              onFinish={ formSubmitHandler }>
               <Item name= { 'name' } label='Name:'>
                 <Input/>
               </Item>

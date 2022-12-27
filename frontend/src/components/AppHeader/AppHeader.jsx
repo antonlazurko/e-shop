@@ -9,7 +9,8 @@ const { Header } = Layout
 
 export const AppHeader = () => {
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userLogin: { userInfo }, cart: { cartItems } } = useSelector(state => state)
+
   const logoutHandler = (e) => {
     dispatch(logout())
   }
@@ -24,7 +25,7 @@ export const AppHeader = () => {
         <Link to='/'><HomeTwoTone />E-Shop</Link>
       </Col>
       <Col span={ 6 }>
-        <Link to='/cart'><ShoppingTwoTone />Cart</Link>
+        <Link to='/cart'><ShoppingTwoTone />Cart({ cartItems?.length || '0' })</Link>
         { userInfo ? (
           <Dropdown menu={ { items } }>
             <span style={ { color:'#fff' } }>{ userInfo.name }</span>

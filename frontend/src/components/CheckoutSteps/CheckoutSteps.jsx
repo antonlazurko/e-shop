@@ -1,19 +1,20 @@
 import { Breadcrumb } from 'antd'
+import { Link } from 'react-router-dom'
 
 export const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
     <Breadcrumb>
       <Breadcrumb.Item>
-        { step1 ? <a href='/login'>Sign-In</a> : 'Shipping' }
+        { step1 ? <Link to='/login'>Sign-In</Link> : 'Sign-In' }
       </Breadcrumb.Item>
       <Breadcrumb.Item>
-        { step2 ? <a href='/shipping'>Shipping</a> : 'Shipping' }
+        { step2 ? <Link to='/shipping'>Shipping</Link> : 'Shipping' }
       </Breadcrumb.Item>
       <Breadcrumb.Item>
-        { step3 ? <a href='/payment'>Payment</a> : 'Payment' }
+        { step3 ? <Link to='/payment'>Payment</Link> : 'Payment' }
       </Breadcrumb.Item>
       <Breadcrumb.Item disabled>
-        { step4 ? <a href='/placeorder'>Place Order</a> : 'Place Order' }
+        { step4 ? <Link to='/placeorder'>Place Order</Link> : 'Place Order' }
       </Breadcrumb.Item>
     </Breadcrumb>
   )

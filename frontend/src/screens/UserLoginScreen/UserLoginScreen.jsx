@@ -22,7 +22,7 @@ export const UserLoginScreen = () => {
 
   const { loading, error, userInfo } = useSelector(state => state.userLogin)
 
-  const onFormSubmit = (value) => {
+  const formSubmitHandler = (value) => {
     dispatch(login(email, password))
   }
 
@@ -34,7 +34,7 @@ export const UserLoginScreen = () => {
 
 
   return loading ? <Loader/> : <Form form={ form }
-    onFinish={ onFormSubmit }>
+    onFinish={ formSubmitHandler }>
     <Item name='email' label='Email:' rules={ [
       {
         required: true,

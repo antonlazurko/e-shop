@@ -15,7 +15,7 @@ export const PaymentScreen = () => {
 
   const [form] = Form.useForm()
 
-  const onFormSubmit = (value) => {
+  const formSubmitHandler = (value) => {
     dispatch(savePaymentMethod(value))
     navigate('/placeorder')
   }
@@ -26,7 +26,7 @@ export const PaymentScreen = () => {
   return (<>
     <CheckoutSteps step2 step3/>
     <Typography></Typography>
-    <Form form={ form } name='method-form' onFinish={ onFormSubmit } initialValues={ { paymentMethod:'paypal' } }>
+    <Form form={ form } name='method-form' onFinish={ formSubmitHandler } initialValues={ { paymentMethod:'paypal' } }>
       <Item name='paymentMethod' rules={ [
         {
           required: true,
