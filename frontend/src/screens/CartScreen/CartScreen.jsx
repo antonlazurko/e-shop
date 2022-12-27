@@ -1,28 +1,25 @@
 import { DeleteTwoTone } from '@ant-design/icons'
 import { Button, Card,Col, Image,List,Row ,Select,Typography } from 'antd'
-import { useEffect,useMemo } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate,useParams } from 'react-router-dom'
+import { Link, useNavigate,useParams } from 'react-router-dom'
 import { addToCart, removeFromCart } from 'redux/actions/cartActions'
+import { useQuery } from 'utils'
 
 const { Item } = List
 
-const useQuery = () => {
-  const { search } = useLocation()
-  return useMemo(() => new URLSearchParams(search), [search])
-}
 export const CartScreen = () => {
   const navigate = useNavigate()
   const query = useQuery()
   const { id } = useParams()
-  const qty = +query.get('qty')
+  const qty = query.get('qty') ? +query.get('qty') : '/'
   const dispatch = useDispatch()
   const { cartItems } = useSelector(({ cart }) => cart)
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
   }
   const checkoutHandler = () => {
-    navigate('/login?redirect=shipping')
+    navigate('/shipping')
   }
 
   useEffect(() => {

@@ -4,16 +4,19 @@ import { useEffect,useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from 'redux/actions/userActions'
+import { useQuery } from 'utils'
+
 
 const { Item } = Form
 
 export const UserLoginScreen = () => {
   const [form] = Form.useForm()
+  const query = useQuery()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const redirect = '/'
+  const redirect = query.get('redirect') ? query.get('redirect')  : '/'
 
   const dispatch = useDispatch()
 
