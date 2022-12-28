@@ -25,11 +25,13 @@ export const AppHeader = () => {
         <Link to='/'><HomeTwoTone />E-Shop</Link>
       </Col>
       <Col span={ 6 }>
-        <Link to='/cart'><ShoppingTwoTone />Cart({ cartItems?.length || '0' })</Link>
         { userInfo ? (
-          <Dropdown menu={ { items } }>
-            <span style={ { color:'#fff' } }>{ userInfo.name }</span>
-          </Dropdown>
+          <>
+            <Link to='/cart'><ShoppingTwoTone />Cart({ cartItems?.length || '0' })</Link>
+            <Dropdown menu={ { items } }>
+              <span style={ { color:'#fff' } }>{ userInfo.name }</span>
+            </Dropdown>
+          </>
         ) : (
           <Link to='/login'><ThunderboltTwoTone />Sign-in</Link>
         )
