@@ -16,10 +16,10 @@ export const ProductScreen = () => {
   const { loading, error, product } = useSelector(state => state.productDetails)
 
   const { name, image,rating, price , description, countInStock, numReviews } = product
-  const [qty, setQty] = useState(1)
+  const [quantity, setQuantity] = useState(1)
 
   const addToCartHandler = () => {
-    navigate(`/cart/${id}?qty=${qty}`)
+    navigate(`/cart/${id}?quantity=${quantity}`)
   }
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export const ProductScreen = () => {
                       <Col>
                         <Select
                           defaultValue={ 1 }
-                          onChange={ (value) => setQty(value) }
+                          onChange={ (value) => setQuantity(value) }
                           options={ [...Array(countInStock)?.keys()].map((key) => ({ label: key + 1, value: key + 1 })) }>
                         </Select>
                       </Col>

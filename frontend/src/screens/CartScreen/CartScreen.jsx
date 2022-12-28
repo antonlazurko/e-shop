@@ -12,7 +12,7 @@ export const CartScreen = () => {
   const navigate = useNavigate()
   const query = useQuery()
   const { id } = useParams()
-  const qty = query.get('qty') ? +query.get('qty') : '/'
+  const quantity = query.get('quantity') ? +query.get('quantity') : '/'
   const dispatch = useDispatch()
   const { cartItems } = useSelector(({ cart }) => cart)
   const removeFromCartHandler = (id) => {
@@ -24,9 +24,9 @@ export const CartScreen = () => {
 
   useEffect(() => {
     if(id){
-      dispatch(addToCart(id, qty))
+      dispatch(addToCart(id, quantity))
     }
-  }, [dispatch, id, qty])
+  }, [dispatch, id, quantity])
 
 
   return <Row>
@@ -36,7 +36,7 @@ export const CartScreen = () => {
         Your cart is empty
         <Link to='/'>Go back</Link></Typography> }
       { cartItems?.length && <List>
-        { cartItems.map(({ product, name, image, price, countInStock, qty }) => (
+        { cartItems.map(({ product, name, image, price, countInStock, quantity }) => (
           <Item key={ product }>
             <Row>
               <Col>
@@ -54,7 +54,7 @@ export const CartScreen = () => {
               </Col>
               <Col>
                 <Select
-                  defaultValue={ qty }
+                  defaultValue={ quantity }
                   onChange={ (value) => dispatch(addToCart(product, value)) }
                   options={ [...Array(countInStock)?.keys()].map((key) => ({ label: key + 1, value: key + 1 })) }>
                 </Select>
@@ -71,7 +71,7 @@ export const CartScreen = () => {
       <Card>
         <List>
           <Item>
-            <Typography>Subtotal ({ cartItems.reduce((acc, item) => acc + item.qty, 0) }) items</Typography>
+            <Typography>Subtotal ({ cartItems.reduce((acc, item) => acc + item.quantity, 0) }) items</Typography>
             <Typography>Total price ${ cartItems.reduce((acc, item) => acc + item.price, 0)?.toFixed(2) }</Typography>
           </Item>
           <Item>

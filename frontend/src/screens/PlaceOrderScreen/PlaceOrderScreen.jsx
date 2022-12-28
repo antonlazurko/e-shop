@@ -1,22 +1,44 @@
 import {  Alert,Button, Card,Col, Image, List, Row, Space,Typography } from 'antd'
 import { CheckoutSteps } from 'components/CheckoutSteps'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { NO_DATA } from 'constants'
+import { useEffect } from 'react'
+import { useDispatch,useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { createdOrder } from 'redux/actions/orderActions'
 
 const { Item : ListItem } = List
 
 export const PlaceOrderScreen = () => {
   const { shippingAddress, paymentMethod, cartItems } = useSelector(state => state.cart)
+  const { order, success, error } = useSelector(state => state.orderCreate)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { address, postalCode, city, country } = shippingAddress
   const tax = +0.15
-
-  const itemsPrice = cartItems?.reduce((acc, { price, qty }) => acc + price * qty,0)
+  const itemsPrice = cartItems?.reduce((acc, { price, quantity }) => acc + price * quantity,0)
   const shippingPrice = itemsPrice > 100 ? 0 : 100
   const taxPrice = (tax * itemsPrice).toFixed(2)
   const totalPrice = (+itemsPrice + +taxPrice + +shippingPrice).toFixed(2)
 
   const placeOrderHandler = () => {
+    dispatch(createdOrder({
+      itemsPrice,
+      orderItems: cartItems,
+      paymentMethod,
+      shippingAddress,
+      shippingPrice,
+      taxPrice,
+      totalPrice
+    }))
   }
+
+  useEffect(() => {
+    if(success){
+      // navigate(`/order/${order._id}`)
+      console.log(order)
+    }
+  }, [navigate, success])
+
 
   return (
     <>
@@ -61,7 +83,7 @@ export const PlaceOrderScreen = () => {
                 { cartItems?.length ?
                   <List
                     dataSource={ cartItems }
-                    renderItem={ ({ name, product, image, qty, price }) =>  (
+                    renderItem={ ({ name, product, image, quantity, price }) =>  (
                       <ListItem key={ product }>
                         <Row style={ { alignItems: 'baseline' } }>
                           <Col>
@@ -75,7 +97,7 @@ export const PlaceOrderScreen = () => {
                             </Link>
                           </Col>
                           <Col>
-                            <Typography>{ price } * { qty } = ${ price * qty }</Typography>
+                            <Typography>{ price } * { quantity } = ${ price * quantity }</Typography>
                           </Col>
                         </Row>
                       </ListItem>
@@ -96,16 +118,19 @@ export const PlaceOrderScreen = () => {
               </ListItem>
               <ListItem>
                 <Col>Shipping</Col>
-                <Col>{ shippingPrice ? `$${shippingPrice}` : 'FREE' }</Col>
+                <Col>{ shippingPrice >= 0 ? `$${shippingPrice}` : NO_DATA }</Col>
               </ListItem>
               <ListItem>
                 <Col>Tax</Col>
-                <Col>{ taxPrice ? `$${taxPrice}` : 'FREE' }</Col>
+                <Col>{ taxPrice ? `$${taxPrice}` : NO_DATA }</Col>
               </ListItem>
               <ListItem>
                 <Col>Total</Col>
-                <Col>{ totalPrice ? `$${totalPrice}` : 'FREE'   }</Col>
+                <Col>{ totalPrice ? `$${totalPrice}` : NO_DATA }</Col>
               </ListItem>
+              { error && <ListItem>
+                <Alert message={ error } type='error'/>
+              </ListItem> }
             </List>
             <Button onClick={ placeOrderHandler }>Place Order</Button>
           </Card>
