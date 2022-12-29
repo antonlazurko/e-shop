@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
+import { OrderScreen } from 'screens/OrderScreen'
 import { PaymentScreen } from 'screens/PaymentScreen'
 import { PlaceOrderScreen } from 'screens/PlaceOrderScreen'
 import { ProductScreen } from 'screens/ProductScreen'
@@ -62,6 +63,11 @@ const routes = [{
   path: '/',
   children: [{ path: '/placeorder',
     element: <ProtectedRoute><PlaceOrderScreen/></ProtectedRoute> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/orders/:id',
+    element: <ProtectedRoute><OrderScreen/></ProtectedRoute> }
   ] },
 {
   path: '/',

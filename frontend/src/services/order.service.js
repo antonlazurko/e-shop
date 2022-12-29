@@ -5,6 +5,6 @@ export const OrderService = {
     return axios.post('orders', order, config)
   },
   async getOrderDetails(id, config){
-    return axios.get(`orders/:${id}`, config)
+    return axios.get(`orders/${id}`, config)
   }
 }

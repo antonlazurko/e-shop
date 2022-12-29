@@ -15,7 +15,7 @@ export const PlaceOrderScreen = () => {
   const navigate = useNavigate()
   const { address, postalCode, city, country } = shippingAddress
   const tax = +0.15
-  const itemsPrice = cartItems?.reduce((acc, { price, quantity }) => acc + price * quantity,0)
+  const itemsPrice = cartItems?.reduce((acc, { price, quantity }) => acc + price * quantity, 0).toFixed(2)
   const shippingPrice = itemsPrice > 100 ? 0 : 100
   const taxPrice = (tax * itemsPrice).toFixed(2)
   const totalPrice = (+itemsPrice + +taxPrice + +shippingPrice).toFixed(2)
@@ -34,8 +34,7 @@ export const PlaceOrderScreen = () => {
 
   useEffect(() => {
     if(success){
-      // navigate(`/order/${order._id}`)
-      console.log(order)
+      navigate(`/orders/${order._id}`)
     }
   }, [navigate, success])
 

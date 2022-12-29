@@ -12,38 +12,38 @@ export const orderCreateReducer = (state = {}, { type, payload }) => {
   switch (type) {
   case ORDER_CREATE_REQUEST:
     return {
-      loasding: true,
+      loading: true,
     }
   case ORDER_CREATE_SUCCESS:
     return {
-      loasding: false,
+      loading: false,
       success: true,
       order: payload
     }
   case ORDER_CREATE_FAIL:
     return {
-      loasding: false,
+      loading: false,
       error: payload
     }
   default:
     return state
   }
 }
-export const orderDetailsReducer = (state = { orderItens: [], shippingAddress: {} }, { type, payload }) => {
+export const orderDetailsReducer = (state = { loading: true, orderItems: [], shippingAddress: {} }, { type, payload }) => {
   switch (type) {
   case ORDER_DETAILS_REQUEST:
     return {
       ...state,
-      loasding: true,
+      loading: true,
     }
   case ORDER_DETAILS_SUCCESS:
     return {
-      loasding: false,
+      loading: false,
       order: payload
     }
   case ORDER_DETAILS_FAIL:
     return {
-      loasding: false,
+      loading: false,
       error: payload
     }
   default:

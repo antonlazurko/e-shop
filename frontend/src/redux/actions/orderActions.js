@@ -41,7 +41,7 @@ export const createdOrder = (order) => async(dispatch, getState) => {
     })
   }
 }
-export const getOrderDetails = (order) => async(dispatch, getState) => {
+export const getOrderDetails = (id) => async(dispatch, getState) => {
   try {
     dispatch({
       type: ORDER_DETAILS_REQUEST
@@ -51,8 +51,7 @@ export const getOrderDetails = (order) => async(dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${userInfo.token}` }
     }
-    const data = await OrderService.getOrderDetails(order, config)
-
+    const data = await OrderService.getOrderDetails(id, config)
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
       payload: data
