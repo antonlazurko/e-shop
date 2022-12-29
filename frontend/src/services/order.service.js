@@ -6,5 +6,8 @@ export const OrderService = {
   },
   async getOrderDetails(id, config){
     return axios.get(`orders/${id}`, config)
+  },
+  async putPayOrder(id, paymentResult, config){
+    return axios.put(`orders/${id}/pay`, paymentResult, config)
   }
 }

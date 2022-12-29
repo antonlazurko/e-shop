@@ -3,13 +3,13 @@ import {
   cartReducer,
   orderCreateReducer,
   orderDetailsReducer,
+  orderPayReducer,
   productDetailsReducer,
   productListReducer,
   userDetailsReducer,
   userLoginReducer,
   userRegisterReducer,
-  userUpdateProfileReducer
-} from 'redux/reducers'
+  userUpdateProfileReducer } from 'redux/reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
@@ -22,7 +22,8 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
-  orderDetails: orderDetailsReducer
+  orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

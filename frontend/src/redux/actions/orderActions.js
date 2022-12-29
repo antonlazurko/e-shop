@@ -4,7 +4,11 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
-  ORDER_DETAILS_SUCCESS
+  ORDER_DETAILS_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_RESET,
+  ORDER_PAY_SUCCESS
 } from 'redux/reduxConstatns'
 import { OrderService } from 'services/order.service.js'
 
@@ -66,6 +70,37 @@ export const getOrderDetails = (id) => async(dispatch, getState) => {
     }
     dispatch({
       type: ORDER_DETAILS_FAIL,
+      payload: message
+    })
+  }
+}
+
+export const payOrder = (orderId, paymentResult) => async(dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_PAY_REQUEST
+    })
+    const { userLogin: { userInfo } } = getState()
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}` }
+    }
+    const data = await OrderService.putPayOrder(orderId, paymentResult, config)
+    dispatch({
+      type: ORDER_PAY_SUCCESS,
+      payload: data
+
+    })
+  } catch (error) {
+    const message = error?.response?.data?.message ?
+      error?.data?.message :
+      error?.message
+    if (message === 'User not found!') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: ORDER_PAY_FAIL,
       payload: message
     })
   }
