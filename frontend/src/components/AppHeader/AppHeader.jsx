@@ -2,7 +2,7 @@ import { HomeTwoTone, ShoppingTwoTone, ThunderboltTwoTone } from '@ant-design/ic
 import { Col,Dropdown,Layout, Row } from 'antd'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { logout } from 'redux/actions/userActions'
+import { logout } from 'redux/actions'
 
 const { Header } = Layout
 

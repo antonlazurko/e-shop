@@ -3,7 +3,7 @@ import { Button, Card,Col, Image,List,Row ,Select,Typography } from 'antd'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate,useParams } from 'react-router-dom'
-import { addToCart, removeFromCart } from 'redux/actions/cartActions'
+import { addToCart, removeFromCart } from 'redux/actions'
 import { useQuery } from 'utils'
 
 const { Item } = List

@@ -4,7 +4,7 @@ import {
   Outlet,
   useNavigate
 } from 'react-router-dom'
-import { logout } from 'redux/actions/userActions'
+import { logout } from 'redux/actions'
 
 export const ProtectedRoute = ({ redirectPath = '/login', children }) => {
   const { userInfo } = useSelector(state => state.userLogin)

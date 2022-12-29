@@ -1,9 +1,9 @@
-import { Alert,Button, Col,Form, Input, notification,Row,Typography  } from 'antd'
+import { Alert,Button, Col,Form, Input, Row,Typography,notification  } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getUserDetails, updateUserProfile } from 'redux/actions/userActions'
+import { getUserDetails, updateUserProfile } from 'redux/actions'
 import { USER_UPDATE_PROFILE_RESET } from 'redux/reduxConstatns'
 
 

@@ -2,7 +2,7 @@ import {  Button, Form, Input,InputNumber, Typography } from 'antd'
 import { CheckoutSteps } from 'components/CheckoutSteps'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { saveShippingAddress } from 'redux/actions/cartActions'
+import { saveShippingAddress } from 'redux/actions'
 
 const { Item } = Form
 

@@ -5,7 +5,7 @@ import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link ,useNavigate,useParams } from 'react-router-dom'
-import { listProductDetails } from 'redux/actions/productActions'
+import { listProductDetails } from 'redux/actions'
 
 const { Item: ListItem } = List
 
