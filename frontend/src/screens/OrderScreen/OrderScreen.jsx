@@ -1,16 +1,21 @@
-import {  Alert,Button, Card,Col, Image, List, Row, Space,Typography } from 'antd'
+import {  Alert, Card,Col, Image, List, Row, Space,Typography } from 'antd'
 import { Loader } from 'components/Loader'
+import { PayPalButtonWrapper } from 'components/PayPalButtonWrapper'
 import { NO_DATA } from 'constants'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link,  useParams } from 'react-router-dom'
-import { getOrderDetails } from 'redux/actions'
+import { getOrderDetails, payOrder } from 'redux/actions'
+import { ORDER_PAY_RESET } from 'redux/reduxConstatns'
+import { PaymentService } from 'services/payment.service'
 
 const { Item : ListItem } = List
 
 export const OrderScreen = () => {
   const { id } = useParams()
   const { order = {}, loading, error } = useSelector(state => state.orderDetails)
+  const { success: successPay } = useSelector(state => state.orderPay)
+  const [clientId, setClientId] = useState(null)
   const {
     shippingAddress,
     paymentMethod,
@@ -27,10 +32,24 @@ export const OrderScreen = () => {
     _id } = order
 
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getOrderDetails(id))
-  }, [])
 
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(_id, paymentResult))
+  }
+
+  useEffect(() => {
+    (async() => {
+      const clientId = await PaymentService.getPayPalClientID()
+      clientId && setClientId(clientId)
+    }
+    )()
+    if (!order?._id || successPay) {
+      dispatch({
+        type: ORDER_PAY_RESET
+      })
+      dispatch(getOrderDetails(id))
+    }
+  }, [dispatch, id, order?._id, successPay])
 
   return (
     loading ?
@@ -132,6 +151,14 @@ export const OrderScreen = () => {
                 </Row> }
               </Card>
             </ListItem>
+            { !isPaid && clientId && (
+              <PayPalButtonWrapper
+                clientId={ clientId }
+                amount={ totalPrice }
+                showSpinner={ false }
+                successPaymentHandler={ successPaymentHandler }
+              />
+            ) }
           </List>
         )
   )

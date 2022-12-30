@@ -7,7 +7,6 @@ import {
   ORDER_DETAILS_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
-  ORDER_PAY_RESET,
   ORDER_PAY_SUCCESS
 } from 'redux/reduxConstatns'
 import { OrderService } from 'services/order.service.js'

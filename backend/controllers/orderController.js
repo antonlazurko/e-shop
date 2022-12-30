@@ -50,14 +50,14 @@ if (order) {
 // @access Private
 const updateOrderToPaid = asyncHandler(async(req, res) => {
     const order = await Order.findById(req.params.id)
-    const {id, status, update_time, payer} = req.body
+    const {id, status, create_time, payer} = req.body
 if (order) {
     order.isPaid = true
-    order.isPaid = Date.now()
+    order.paidAt = Date.now()
     order.paymentResult = {
         id: id,
         status: status,
-        update_time: update_time,
+        update_time: create_time,
         email_address: payer.email_address
     }
     const updatedOrder = await order.save()
