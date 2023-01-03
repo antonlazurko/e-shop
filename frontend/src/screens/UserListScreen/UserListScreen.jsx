@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { deleteUser,usersList } from 'redux/actions'
-export const UserScreen = () => {
+export const UserListScreen = () => {
   const { userList:{ users, loading, error }, userLogin:{ userInfo }, userDelete: { success: deleteSuccess } } = useSelector(state => state)
 
   const dispatch = useDispatch()
@@ -56,7 +56,7 @@ export const UserScreen = () => {
       key: 'linkToUser',
       dataIndex: 'linkToUser',
       render: (_, { _id }) => (<>
-        <Link to={ `/user/${_id}/edit` }>EDIT</Link>
+        <Link to={ `/admin/user/${_id}/edit` }>EDIT</Link>
         <Popconfirm
           placement='top'
           title='Are you shure you want to delete this user?'

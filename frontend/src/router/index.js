@@ -7,9 +7,10 @@ import { PlaceOrderScreen } from 'screens/PlaceOrderScreen'
 import { ProductScreen } from 'screens/ProductScreen'
 import { ProfileScreen } from 'screens/ProfileScreen'
 import { ShippingScreen } from 'screens/ShippingScreen'
+import { UserEditScreen } from 'screens/UserEditScreen'
+import { UserListScreen } from 'screens/UserListScreen'
 import { UserLoginScreen } from 'screens/UserLoginScreen'
 import { UserRegisterScreen } from 'screens/UserRegisterScreen'
-import { UserScreen } from 'screens/UserScreen'
 
 import { ProtectedRoute } from './ProtectedRoute'
 
@@ -23,7 +24,12 @@ const routes = [{
 {
   path: '/',
   children: [{ path: '/admin/userlist',
-    element: <ProtectedRoute><UserScreen/></ProtectedRoute> }
+    element: <ProtectedRoute><UserListScreen/></ProtectedRoute> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/user/:id/edit',
+    element: <ProtectedRoute><UserEditScreen/></ProtectedRoute> }
   ] },
 {
   path: '/',

@@ -207,11 +207,10 @@ export const deleteUser = (id) => async(dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${userInfo.token}` }
     }
-    const data = await UserService.deleteUser(id, config)
+    await UserService.deleteUser(id, config)
 
     dispatch({
       type: USER_DELETE_SUCCESS,
-      payload: data
     })
   } catch (error) {
     const message = error?.response?.data?.message ?
