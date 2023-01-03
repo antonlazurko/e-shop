@@ -1,5 +1,5 @@
 import { HomeTwoTone, ShoppingTwoTone, ThunderboltTwoTone } from '@ant-design/icons'
-import { Col,Dropdown,Layout, Row } from 'antd'
+import { Button,Col,Dropdown,Layout, Row } from 'antd'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logout } from 'redux/actions'
@@ -15,10 +15,18 @@ export const AppHeader = () => {
     dispatch(logout())
   }
 
-  const items = [
+  const userItems = [
     { label: <Link to='/profile'>Profile</Link>, key: 'profile' },
-    { label: <Link onClick={ logoutHandler }>Logout</Link>, key: 'Logout' },
+    { label: <Button type='link' onClick={ logoutHandler }>Logout</Button>, key: 'logout' }
   ]
+  const adminItems = [
+    { label: <Link to='/profile'>Profile</Link>, key: 'profile' },
+    { label: <Button type='text' onClick={ logoutHandler }>Logout</Button>, key: 'logout' },
+    { label: <Link to='/admin/userlist'>Users</Link>, key: 'users' },
+    { label: <Link to='/admin/productlist'>Products</Link>, key: 'products' },
+    { label: <Link to='/admin/orderlist'>Orders</Link>, key: 'orders' }
+  ]
+
   return (<Header>
     <Row>
       <Col span={ 18 }>
@@ -28,7 +36,7 @@ export const AppHeader = () => {
         { userInfo ? (
           <>
             <Link to='/cart'><ShoppingTwoTone />Cart({ cartItems?.length || '0' })</Link>
-            <Dropdown menu={ { items } }>
+            <Dropdown menu={ { items: userInfo?.isAdmin ? adminItems : userItems } }>
               <span style={ { color:'#fff' } }>{ userInfo.name }</span>
             </Dropdown>
           </>

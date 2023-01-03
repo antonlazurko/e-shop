@@ -9,6 +9,7 @@ import { ProfileScreen } from 'screens/ProfileScreen'
 import { ShippingScreen } from 'screens/ShippingScreen'
 import { UserLoginScreen } from 'screens/UserLoginScreen'
 import { UserRegisterScreen } from 'screens/UserRegisterScreen'
+import { UserScreen } from 'screens/UserScreen'
 
 import { ProtectedRoute } from './ProtectedRoute'
 
@@ -18,6 +19,11 @@ const routes = [{
   path: '/',
   children: [{ path: '/',
     element: <HomeScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/userlist',
+    element: <UserScreen/> }
   ] },
 {
   path: '/',

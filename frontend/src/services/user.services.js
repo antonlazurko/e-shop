@@ -12,5 +12,8 @@ export const UserService = {
   },
   async updateUserProfile(user, config){
     return axios.put('users/profile', user,  config)
+  },
+  async getAllUsers(config){
+    return axios.get('users', config)
   }
 }
