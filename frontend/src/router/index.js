@@ -23,7 +23,7 @@ const routes = [{
 {
   path: '/',
   children: [{ path: '/admin/userlist',
-    element: <UserScreen/> }
+    element: <ProtectedRoute><UserScreen/></ProtectedRoute> }
   ] },
 {
   path: '/',

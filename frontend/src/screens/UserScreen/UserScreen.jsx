@@ -2,12 +2,13 @@ import { Alert,Button, Table, Tag } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { usersList } from 'redux/actions'
 export const UserScreen = () => {
-  const { users, loading, error } = useSelector(state => state.userList)
+  const { userList:{ users, loading, error }, userLogin:{ userInfo } } = useSelector(state => state)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const userDeleteHandler = (id)=> {
   }
@@ -60,7 +61,11 @@ export const UserScreen = () => {
   ]
 
   useEffect(() => {
-    dispatch(usersList())
+    if (userInfo?.isAdmin) {
+      dispatch(usersList())
+    }else {
+      navigate('/login')
+    }
   },[dispatch])
   return (
     <>
