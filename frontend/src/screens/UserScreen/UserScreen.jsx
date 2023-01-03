@@ -1,16 +1,18 @@
-import { Alert,Button, Table, Tag } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { Alert,Button, Popconfirm,Table, Tag } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { usersList } from 'redux/actions'
+import { deleteUser,usersList } from 'redux/actions'
 export const UserScreen = () => {
-  const { userList:{ users, loading, error }, userLogin:{ userInfo } } = useSelector(state => state)
+  const { userList:{ users, loading, error }, userLogin:{ userInfo }, userDelete: { success } } = useSelector(state => state)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const userDeleteHandler = (id)=> {
+    dispatch(deleteUser(id))
   }
 
   const columns = [
@@ -55,7 +57,22 @@ export const UserScreen = () => {
       dataIndex: 'linkToUser',
       render: (_, { _id }) => (<>
         <Link to={ `/user/${_id}/edit` }>EDIT</Link>
-        <Button onClick={ () => userDeleteHandler(_id) }>DELETE</Button>
+        <Popconfirm
+          placement='top'
+          title='Are you shure you want to delete this user?'
+          onConfirm={ () => userDeleteHandler(_id) }
+          okText='Delete anyway'
+          cancelText='No'
+          icon={
+            <QuestionCircleOutlined
+              style={ {
+                color: 'red',
+              } }
+            />
+          }
+        >
+          <Button>DELETE</Button>
+        </Popconfirm>
       </>)
     },
   ]
@@ -66,7 +83,7 @@ export const UserScreen = () => {
     }else {
       navigate('/login')
     }
-  },[dispatch])
+  },[dispatch, success])
   return (
     <>
       <div>UserScreen</div>

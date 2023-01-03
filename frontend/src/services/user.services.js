@@ -15,5 +15,8 @@ export const UserService = {
   },
   async getAllUsers(config){
     return axios.get('users', config)
+  },
+  async deleteUser(id, config){
+    return axios.delete(`users/${id}`, config)
   }
 }

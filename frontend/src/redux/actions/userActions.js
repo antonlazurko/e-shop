@@ -3,6 +3,9 @@ import { UserService } from 'services/user.services'
 import {
   CART_RESET,
   MY_ORDERS_LIST_RESET,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
@@ -189,6 +192,36 @@ export const usersList = () => async(dispatch, getState) => {
     }
     dispatch({
       type: USER_LIST_FAIL,
+      payload: message
+    })
+  }
+}
+
+export const deleteUser = (id) => async(dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST
+    })
+    const { userLogin: { userInfo } } = getState()
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}` }
+    }
+    const data = await UserService.deleteUser(id, config)
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data
+    })
+  } catch (error) {
+    const message = error?.response?.data?.message ?
+      error?.data?.message :
+      error?.message
+    if (message === 'User not found!') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload: message
     })
   }

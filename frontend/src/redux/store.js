@@ -1,13 +1,16 @@
 import { applyMiddleware,combineReducers,createStore } from 'redux'
 import {
   cartReducer,
-  myOrdersListReducer,  orderCreateReducer,
+  myOrdersListReducer,
+  orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
   productDetailsReducer,
   productListReducer,
+  userDeleteReducer,
   userDetailsReducer,
-  userListReducer,  userLoginReducer,
+  userListReducer,
+  userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer } from 'redux/reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -26,6 +29,7 @@ const reducer = combineReducers({
   orderPay: orderPayReducer,
   myOrdersList: myOrdersListReducer,
   userList: userListReducer,
+  userDelete: userDeleteReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

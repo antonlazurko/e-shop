@@ -1,4 +1,7 @@
 import {
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
@@ -17,7 +20,8 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_RESET,
-  USER_UPDATE_PROFILE_SUCCESS } from 'redux/reduxConstatns'
+  USER_UPDATE_PROFILE_SUCCESS,
+} from 'redux/reduxConstatns'
 
 export const userLoginReducer = (state = { }, { type, payload }) => {
   switch (type) {
@@ -124,3 +128,23 @@ export const userListReducer = (state = { users: [] }, { type, payload }) => {
     return state
   }
 }
+
+export const userDeleteReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+  case USER_DELETE_REQUEST:
+    return { loading: true }
+  case USER_DELETE_SUCCESS:
+    return {
+      loading: false,
+      success: true
+    }
+  case USER_DELETE_FAIL:
+    return {
+      loading: false,
+      error: payload
+    }
+  default:
+    return state
+  }
+}
+
