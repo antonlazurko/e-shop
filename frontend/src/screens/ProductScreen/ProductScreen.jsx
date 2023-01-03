@@ -4,14 +4,14 @@ import { Loader } from 'components/Loader'
 import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { Link ,useNavigate,useParams } from 'react-router-dom'
-import { listProductDetails } from 'redux/actions'
+import { Link ,useParams } from 'react-router-dom'
+import { addToCart,listProductDetails } from 'redux/actions'
+
 
 const { Item: ListItem } = List
 
 export const ProductScreen = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { loading, error, product } = useSelector(state => state.productDetails)
 
@@ -19,7 +19,9 @@ export const ProductScreen = () => {
   const [quantity, setQuantity] = useState(1)
 
   const addToCartHandler = () => {
-    navigate(`/cart/${id}?quantity=${quantity}`)
+    if (id && quantity) {
+      dispatch(addToCart(id, quantity))
+    }
   }
 
   useEffect(() => {
