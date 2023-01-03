@@ -1,7 +1,7 @@
 import { applyMiddleware,combineReducers,createStore } from 'redux'
 import {
   cartReducer,
-  orderCreateReducer,
+  myOrdersListReducer,  orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
   productDetailsReducer,
@@ -23,7 +23,8 @@ const reducer = combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
-  orderPay: orderPayReducer
+  orderPay: orderPayReducer,
+  myOrdersList: myOrdersListReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

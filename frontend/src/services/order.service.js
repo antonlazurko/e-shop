@@ -9,5 +9,8 @@ export const OrderService = {
   },
   async putPayOrder(id, paymentResult, config){
     return axios.put(`orders/${id}/pay`, paymentResult, config)
-  }
+  },
+  async getMyOrdersList(config){
+    return axios.get('orders/myorders', config)
+  },
 }
