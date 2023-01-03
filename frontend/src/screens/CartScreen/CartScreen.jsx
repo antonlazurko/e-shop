@@ -71,11 +71,11 @@ export const CartScreen = () => {
       <Card>
         <List>
           <Item>
-            <Typography>Subtotal ({ cartItems.reduce((acc, item) => acc + item.quantity, 0) })</Typography>
-            <Typography>Total price ${ cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)?.toFixed(2) }</Typography>
+            <Typography>Subtotal ({ cartItems?.reduce((acc, item) => acc + item.quantity, 0) })</Typography>
+            <Typography>Total price ${ cartItems?.reduce((acc, item) => acc + item.price * item.quantity, 0)?.toFixed(2) }</Typography>
           </Item>
           <Item>
-            <Button disabled={ !cartItems.length } onClick={ checkoutHandler }>Proceed to checkout</Button>
+            <Button disabled={ !cartItems?.length } onClick={ checkoutHandler }>Proceed to checkout</Button>
           </Item>
         </List>
       </Card>

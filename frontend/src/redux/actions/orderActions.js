@@ -1,4 +1,5 @@
 import {
+  CART_RESET,
   MY_ORDERS_LIST_FAIL,
   MY_ORDERS_LIST_REQUEST,
   MY_ORDERS_LIST_SUCCESS,
@@ -10,8 +11,7 @@ import {
   ORDER_DETAILS_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
-  ORDER_PAY_SUCCESS,
-} from 'redux/reduxConstatns'
+  ORDER_PAY_SUCCESS } from 'redux/reduxConstatns'
 import { OrderService } from 'services/order.service.js'
 
 import { logout } from './userActions'
@@ -93,6 +93,9 @@ export const payOrder = (orderId, paymentResult) => async(dispatch, getState) =>
       type: ORDER_PAY_SUCCESS,
       payload: data
 
+    })
+    dispatch({
+      type: CART_RESET
     })
   } catch (error) {
     const message = error?.response?.data?.message ?
