@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { createdOrder } from 'redux/actions'
+import { ORDER_CREATE_RESET,USER_DETAILS_RESET } from 'redux/reduxConstatns'
 
 const { Item : ListItem } = List
 
@@ -34,9 +35,11 @@ export const PlaceOrderScreen = () => {
 
   useEffect(() => {
     if(success){
-      navigate(`/orders/${order._id}`)
+      navigate(`/orders/${order?._id}`)
+      dispatch({ type: USER_DETAILS_RESET })
+      dispatch({ type: ORDER_CREATE_RESET })
     }
-  }, [navigate, success])
+  }, [dispatch, navigate, order?._id, success])
 
 
   return (

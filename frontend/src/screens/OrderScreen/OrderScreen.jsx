@@ -43,7 +43,7 @@ export const OrderScreen = () => {
       clientId && setClientId(clientId)
     }
     )()
-    if (!order?._id || successPay) {
+    if (!order?._id || successPay || order?._id !== id) {
       dispatch({
         type: ORDER_PAY_RESET
       })

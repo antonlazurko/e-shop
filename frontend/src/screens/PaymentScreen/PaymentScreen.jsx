@@ -8,12 +8,10 @@ import { savePaymentMethod } from 'redux/actions'
 const { Item } = Form
 
 export const PaymentScreen = () => {
+  const [form] = Form.useForm()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { shippingAddress } = useSelector(state => state?.cart)
-
-
-  const [form] = Form.useForm()
 
   const formSubmitHandler = (value) => {
     dispatch(savePaymentMethod(value))
