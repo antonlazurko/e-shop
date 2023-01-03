@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { deleteUser,usersList } from 'redux/actions'
 export const UserScreen = () => {
-  const { userList:{ users, loading, error }, userLogin:{ userInfo }, userDelete: { success } } = useSelector(state => state)
+  const { userList:{ users, loading, error }, userLogin:{ userInfo }, userDelete: { success: deleteSuccess } } = useSelector(state => state)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -83,7 +83,7 @@ export const UserScreen = () => {
     }else {
       navigate('/login')
     }
-  },[dispatch, success])
+  },[dispatch, navigate, deleteSuccess, userInfo?.isAdmin])
   return (
     <>
       <div>UserScreen</div>
