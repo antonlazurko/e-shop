@@ -25,7 +25,7 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS } from '../reduxConstatns'
 
-export const login = (email, password) => async(dispatch) => {
+export const login = ({ email, password }) => async(dispatch) => {
   try {
     dispatch({
       type: USER_LOGIN_REQUEST

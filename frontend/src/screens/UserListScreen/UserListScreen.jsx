@@ -92,7 +92,10 @@ export const UserListScreen = () => {
         error ?
           <Alert banner={ true } message={ error } type='error'/> :
           (
-            <Table columns={ columns } dataSource={ users } rowKey={ ({ _id }) => _id }></Table>
+            <Table
+              columns={ columns }
+              dataSource={ users }
+              rowKey={ ({ _id }) => _id }></Table>
           ) }
     </>
   )
