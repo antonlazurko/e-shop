@@ -21,9 +21,12 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_UPDATE_FAIL,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
-  USER_UPDATE_PROFILE_SUCCESS } from '../reduxConstatns'
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS } from '../reduxConstatns'
 
 export const login = ({ email, password }) => async(dispatch) => {
   try {
@@ -221,6 +224,39 @@ export const deleteUser = (id) => async(dispatch, getState) => {
     }
     dispatch({
       type: USER_DELETE_FAIL,
+      payload: message
+    })
+  }
+}
+
+export const updateUser = (id, user) => async(dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST
+    })
+    const { userLogin: { userInfo } } = getState()
+    const config = {
+      headers: { 'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}` }
+    }
+    const data = await UserService.updateUser(id, user, config)
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+    })
+    dispatch({
+      type:USER_DETAILS_SUCCESS,
+      payload: data
+    })
+  } catch (error) {
+    const message = error?.response?.data?.message ?
+      error?.data?.message :
+      error?.message
+    if (message === 'User not found!') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload: message
     })
   }

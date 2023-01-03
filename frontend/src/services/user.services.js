@@ -18,5 +18,8 @@ export const UserService = {
   },
   async deleteUser(id, config){
     return axios.delete(`users/${id}`, config)
+  },
+  async updateUser(id, body, config){
+    return axios.put(`users/${id}`, body, config)
   }
 }

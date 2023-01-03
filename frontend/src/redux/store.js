@@ -12,7 +12,8 @@ import {
   userListReducer,
   userLoginReducer,
   userRegisterReducer,
-  userUpdateProfileReducer } from 'redux/reducers'
+  userUpdateProfileReducer,
+  userUpdateReducer } from 'redux/reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
@@ -29,7 +30,8 @@ const reducer = combineReducers({
   orderPay: orderPayReducer,
   myOrdersList: myOrdersListReducer,
   userList: userListReducer,
-  userDelete: userDeleteReducer
+  userDelete: userDeleteReducer,
+  userUpdate:userUpdateReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
