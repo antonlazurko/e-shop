@@ -1,9 +1,13 @@
-import { Alert,Button, Col,Form, Input, notification,Row,Typography  } from 'antd'
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined
+} from '@ant-design/icons'
+import { Alert,Button, Col,Form, Input, Row,Table,Tag,Typography,notification  } from 'antd'
 import { Loader } from 'components/Loader'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getUserDetails, updateUserProfile } from 'redux/actions/userActions'
+import { getUserDetails, myOrdersList,updateUserProfile } from 'redux/actions'
 import { USER_UPDATE_PROFILE_RESET } from 'redux/reduxConstatns'
 
 
@@ -13,15 +17,17 @@ export const ProfileScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-  const password = Form.useWatch('password', form)
+  const [password, setPassword] = useState('')
 
-  const { userInfo } = useSelector(state => state.userLogin)
-  const { loading, error, user } = useSelector(state => state.userDetails)
-  const { success } = useSelector(state => state.userUpdateProfile)
+  const { userLogin: { userInfo },
+    userDetails: { loading, error, user },
+    userUpdateProfile : { success },
+    myOrdersList: { orders, error: ordersError, loading: ordersLoading }
+  } = useSelector(state => state)
 
-  const onFormSubmit = () => {
+  const formSubmitHandler = () => {
     const { name, email, password } = form.getFieldsValue()
-    if(name ===user.name && email ===user.email && !password){
+    if(name === user.name && email === user.email && !password){
       notification.info({
         message: 'Nothing changed!'
       })
@@ -34,7 +40,75 @@ export const ProfileScreen = () => {
       password
     }))
   }
-
+  const orderDetailsHandler = (id) => {
+    console.log(id)
+  }
+  const myOrdersTableColumns = [
+    {
+      title: 'ID',
+      dataIndex: '_id',
+      key: '_id',
+    },
+    {
+      title: 'DATE',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (_, { createdAt }) => createdAt.substring(0, 10)
+    },
+    {
+      title: 'TOTAL',
+      dataIndex: 'totalPrice',
+      key: 'totalPrice',
+      render: (_, { totalPrice }) => `$${totalPrice}`,
+      sorter: (a, b) => a - b,
+    },
+    {
+      title: 'PAID',
+      dataIndex: 'isPaid',
+      key: 'isPaid',
+      render: (_, { paidAt }) => paidAt ? (
+        <Tag
+          icon={ <CheckCircleOutlined /> }
+          color='success'>
+          { paidAt.substring(0, 10) }
+        </Tag>
+      )
+        :
+        (
+          <Tag
+            icon={ <CloseCircleOutlined /> }
+            color='error'>
+            NOT PAID
+          </Tag>
+        )
+    },
+    {
+      title: 'DELIVERED',
+      dataIndex: 'isDelivered',
+      key: 'isDelivered',
+      render: (_, { deliveredAt }) => deliveredAt ? (
+        <Tag
+          icon={ <CheckCircleOutlined /> }
+          color='success'>
+          { deliveredAt.substring(0, 10) }
+        </Tag>
+      )
+        :
+        (
+          <Tag
+            icon={ <CloseCircleOutlined /> }
+            color='error'>
+            NOT DELIVERED
+          </Tag>
+        )
+    },
+    {
+      title: '',
+      dataIndex: 'Details',
+      key: 'Details',
+      render: (_, { _id }) => <Button onClick={ () => orderDetailsHandler(_id) }>DETAILS</Button>
+    },
+  ]
   useEffect(() => {
     if(!userInfo){
       navigate('/login')
@@ -42,6 +116,7 @@ export const ProfileScreen = () => {
       if (!user?.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
+        dispatch(myOrdersList())
       }else{
         form.setFieldsValue({
           name: user.name,
@@ -65,7 +140,7 @@ export const ProfileScreen = () => {
             { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
             <Form form={ form }
               name='update-form'
-              onFinish={ onFormSubmit }>
+              onFinish={ formSubmitHandler }>
               <Item name= { 'name' } label='Name:'>
                 <Input/>
               </Item>
@@ -79,7 +154,7 @@ export const ProfileScreen = () => {
               </Item>
               <Item
                 label='Password:' name='password'>
-                <Input.Password placeholder='Password'/>
+                <Input placeholder='Password' onChange={ e => setPassword(e.target.value) }/>
               </Item>
               { !!password && <Item
                 label='Confirm password:'
@@ -109,6 +184,10 @@ export const ProfileScreen = () => {
           </Col>
           <Col span={ 9 }>
             <Typography>My Orders</Typography>
+            { ordersLoading ? <Loader/> : ordersError ? <Alert closable={ true } banner={ true } message={ error } type='error' /> : (
+              <Table
+                columns={ myOrdersTableColumns } dataSource={ orders }></Table>
+            ) }
           </Col>
         </Row>
       </>

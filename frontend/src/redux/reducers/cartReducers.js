@@ -1,6 +1,6 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from 'redux/reduxConstatns'
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_RESET,CART_SAVE_PAYMENT_METHOD_ADDRESS,CART_SAVE_SHIPPING_ADDRESS } from 'redux/reduxConstatns'
 
-export const cartReducer = (state = { cartItems: [] }, { type, payload }) => {
+export const cartReducer = (state = { cartItems: [], shippingAddress: { city: 'Kyiv' } }, { type, payload }) => {
   switch (type) {
   case CART_ADD_ITEM:
     const item = payload
@@ -20,6 +20,21 @@ export const cartReducer = (state = { cartItems: [] }, { type, payload }) => {
     return {
       ...state,
       cartItems:state.cartItems.filter(({ product }) => product !== payload )
+    }
+  case CART_SAVE_SHIPPING_ADDRESS:
+    return {
+      ...state,
+      shippingAddress:payload
+    }
+  case CART_SAVE_PAYMENT_METHOD_ADDRESS:
+    return {
+      ...state,
+      paymentMethod: payload
+    }
+  case CART_RESET:
+    return {
+      ...state,
+      cartItems: [],
     }
   default:
     return state

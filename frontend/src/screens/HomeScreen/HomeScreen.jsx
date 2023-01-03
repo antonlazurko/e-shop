@@ -5,7 +5,7 @@ import { mediaQueryies } from 'constants'
 import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { listProducts } from 'redux/actions/productActions'
+import { listProducts } from 'redux/actions'
 const { largedesktopOrLaptop, smallDesktopOrLaptop, tablet, mobile } = mediaQueryies
 
 export const HomeScreen = () => {

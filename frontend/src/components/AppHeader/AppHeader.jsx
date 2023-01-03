@@ -2,14 +2,15 @@ import { HomeTwoTone, ShoppingTwoTone, ThunderboltTwoTone } from '@ant-design/ic
 import { Col,Dropdown,Layout, Row } from 'antd'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { logout } from 'redux/actions/userActions'
+import { logout } from 'redux/actions'
 
 const { Header } = Layout
 
 
 export const AppHeader = () => {
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userLogin: { userInfo }, cart: { cartItems } } = useSelector(state => state)
+
   const logoutHandler = (e) => {
     dispatch(logout())
   }
@@ -24,11 +25,13 @@ export const AppHeader = () => {
         <Link to='/'><HomeTwoTone />E-Shop</Link>
       </Col>
       <Col span={ 6 }>
-        <Link to='/cart'><ShoppingTwoTone />Cart</Link>
         { userInfo ? (
-          <Dropdown menu={ { items } }>
-            <span style={ { color:'#fff' } }>{ userInfo.name }</span>
-          </Dropdown>
+          <>
+            <Link to='/cart'><ShoppingTwoTone />Cart({ cartItems?.length || '0' })</Link>
+            <Dropdown menu={ { items } }>
+              <span style={ { color:'#fff' } }>{ userInfo.name }</span>
+            </Dropdown>
+          </>
         ) : (
           <Link to='/login'><ThunderboltTwoTone />Sign-in</Link>
         )

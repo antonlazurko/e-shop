@@ -1,7 +1,7 @@
-import { CART_ADD_ITEM,CART_REMOVE_ITEM } from 'redux/reduxConstatns'
+import { CART_ADD_ITEM,CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD_ADDRESS,CART_SAVE_SHIPPING_ADDRESS } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
-export const addToCart = (id, qty) => async(dispatch, getState) => {
+export const addToCart = (id, quantity) => async(dispatch, getState) => {
   const data = await ProductService.getProductById(id)
   dispatch({
     type: CART_ADD_ITEM,
@@ -11,7 +11,7 @@ export const addToCart = (id, qty) => async(dispatch, getState) => {
       image: data.image,
       price: data.price,
       countInStock: data.countInStock,
-      qty: qty
+      quantity: quantity
     }
   })
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
@@ -23,4 +23,18 @@ export const removeFromCart = (id) => async(dispatch, getState) => {
     payload: id
   })
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
+}
+export const saveShippingAddress = (addressData) => async(dispatch, getState) => {
+  dispatch({
+    type: CART_SAVE_SHIPPING_ADDRESS,
+    payload: addressData
+  })
+  localStorage.setItem('shippingAddress', JSON.stringify(addressData))
+}
+export const savePaymentMethod = ({ paymentMethod }) => async(dispatch) => {
+  dispatch({
+    type: CART_SAVE_PAYMENT_METHOD_ADDRESS,
+    payload: paymentMethod
+  })
+  localStorage.setItem('paymentMethod', JSON.stringify(paymentMethod))
 }

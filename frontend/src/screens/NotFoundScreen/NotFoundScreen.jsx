@@ -1,7 +1,7 @@
 import { FrownOutlined } from '@ant-design/icons'
 import { Typography } from 'antd'
 
-export const NotFoundScreen = () => {
+export default function NotFoundScreen (){
   return (
     <div style={ { display: 'flex', flexDirection: 'column', justifyContent: 'center' } }>
       <Typography.Title style={ { textAlign: 'center', marginBottom: '30px' } }>

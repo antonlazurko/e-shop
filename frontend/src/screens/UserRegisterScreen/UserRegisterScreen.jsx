@@ -2,13 +2,15 @@ import { Alert, Button, Col,Form, Input,Row } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect,useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { register } from 'redux/actions/userActions'
+import { Link,useNavigate } from 'react-router-dom'
+import { register } from 'redux/actions'
+import { useQuery } from 'utils'
 
 const { Item } = Form
 
 export const UserRegisterScreen = () => {
   const dispatch = useDispatch()
+  const query = useQuery()
   const navigate = useNavigate()
   const [form] = Form.useForm()
   const [name, setName] = useState('')
@@ -16,10 +18,11 @@ export const UserRegisterScreen = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
-  const redirect = '/'
+  const redirect = query.get('redirect') ? query.get('redirect') : '/'
+
   const { loading, error, userInfo } = useSelector(state => state.userRegister)
 
-  const onFormSubmit = (value) => {
+  const formSubmitHandler = (value) => {
     dispatch(register(name, email, password))
   }
 
@@ -27,15 +30,13 @@ export const UserRegisterScreen = () => {
     if(userInfo){
       navigate(redirect)
     }
-  }, [userInfo, navigate])
+  }, [userInfo, navigate, redirect])
   return loading ? <Loader/> : <Form form={ form }
-    onFinish={ onFormSubmit }>
+    onFinish={ formSubmitHandler }>
     <Item name='name' label='Name:' rules={ [
       {
         required: true,
-        type: 'name',
         message: 'Please input your name!',
-
       },
     ] }>
       <Input placeholder='Name' value={ name } onChange={ (e) => setName(e.target.value) }/>
