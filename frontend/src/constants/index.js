@@ -5,3 +5,4 @@ export const mediaQueryies = {
   mobile: '(max-width: 767px)'
 }
 export const NO_DATA = 'No data'
+export const USER_NOT_FOUND = 'User not found'

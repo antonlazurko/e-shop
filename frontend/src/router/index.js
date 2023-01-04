@@ -1,12 +1,17 @@
 import { lazy } from 'react'
 import { CartScreen } from 'screens/CartScreen'
 import { HomeScreen } from 'screens/HomeScreen'
+import { OrderListScreen } from 'screens/OrderListScreen'
 import { OrderScreen } from 'screens/OrderScreen'
 import { PaymentScreen } from 'screens/PaymentScreen'
 import { PlaceOrderScreen } from 'screens/PlaceOrderScreen'
+import { ProductListScreen } from 'screens/ProductListScreen'
 import { ProductScreen } from 'screens/ProductScreen'
+import { ProductUpdateScreen } from 'screens/ProductUpdateScreen'
 import { ProfileScreen } from 'screens/ProfileScreen'
 import { ShippingScreen } from 'screens/ShippingScreen'
+import { UserEditScreen } from 'screens/UserEditScreen'
+import { UserListScreen } from 'screens/UserListScreen'
 import { UserLoginScreen } from 'screens/UserLoginScreen'
 import { UserRegisterScreen } from 'screens/UserRegisterScreen'
 
@@ -18,6 +23,26 @@ const routes = [{
   path: '/',
   children: [{ path: '/',
     element: <HomeScreen/> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/userlist',
+    element: <ProtectedRoute><UserListScreen/></ProtectedRoute> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/user/:id/edit',
+    element: <ProtectedRoute><UserEditScreen/></ProtectedRoute> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/productlist',
+    element: <ProtectedRoute><ProductListScreen/></ProtectedRoute> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/product/:id/edit',
+    element: <ProtectedRoute><ProductUpdateScreen/></ProtectedRoute> }
   ] },
 {
   path: '/',
@@ -68,6 +93,11 @@ const routes = [{
   path: '/',
   children: [{ path: '/orders/:id',
     element: <ProtectedRoute><OrderScreen/></ProtectedRoute> }
+  ] },
+{
+  path: '/',
+  children: [{ path: '/admin/orderlist',
+    element: <ProtectedRoute><OrderListScreen/></ProtectedRoute> }
   ] },
 {
   path: '/',

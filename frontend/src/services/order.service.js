@@ -13,4 +13,10 @@ export const OrderService = {
   async getMyOrdersList(config){
     return axios.get('orders/myorders', config)
   },
+  async getAllOrdersList(config){
+    return axios.get('orders', config)
+  },
+  async putDeliverOrder(id, config){
+    return axios.put(`orders/${id}/deliver`, {}, config)
+  },
 }

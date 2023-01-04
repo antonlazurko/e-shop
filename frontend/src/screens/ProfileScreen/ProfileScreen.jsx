@@ -6,7 +6,7 @@ import { Alert,Button, Col,Form, Input, Row,Table,Tag,Typography,notification  }
 import { Loader } from 'components/Loader'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import { getUserDetails, myOrdersList,updateUserProfile } from 'redux/actions'
 import { USER_UPDATE_PROFILE_RESET } from 'redux/reduxConstatns'
 
@@ -25,8 +25,7 @@ export const ProfileScreen = () => {
     myOrdersList: { orders, error: ordersError, loading: ordersLoading }
   } = useSelector(state => state)
 
-  const formSubmitHandler = () => {
-    const { name, email, password } = form.getFieldsValue()
+  const formSubmitHandler = ({ name, email, password }) => {
     if(name === user.name && email === user.email && !password){
       notification.info({
         message: 'Nothing changed!'
@@ -40,9 +39,7 @@ export const ProfileScreen = () => {
       password
     }))
   }
-  const orderDetailsHandler = (id) => {
-    console.log(id)
-  }
+
   const myOrdersTableColumns = [
     {
       title: 'ID',
@@ -106,7 +103,7 @@ export const ProfileScreen = () => {
       title: '',
       dataIndex: 'Details',
       key: 'Details',
-      render: (_, { _id }) => <Button onClick={ () => orderDetailsHandler(_id) }>DETAILS</Button>
+      render: (_, { _id }) => <Link to={ `/orders/${_id}` }>DETAILS</Link>
     },
   ]
   useEffect(() => {
@@ -186,7 +183,10 @@ export const ProfileScreen = () => {
             <Typography>My Orders</Typography>
             { ordersLoading ? <Loader/> : ordersError ? <Alert closable={ true } banner={ true } message={ error } type='error' /> : (
               <Table
-                columns={ myOrdersTableColumns } dataSource={ orders }></Table>
+                rowKey={ ({ _id }) => _id }
+                columns={ myOrdersTableColumns }
+                dataSource={ orders }>
+              </Table>
             ) }
           </Col>
         </Row>

@@ -12,5 +12,14 @@ export const UserService = {
   },
   async updateUserProfile(user, config){
     return axios.put('users/profile', user,  config)
+  },
+  async getAllUsers(config){
+    return axios.get('users', config)
+  },
+  async deleteUser(id, config){
+    return axios.delete(`users/${id}`, config)
+  },
+  async updateUser(id, body, config){
+    return axios.put(`users/${id}`, body, config)
   }
 }

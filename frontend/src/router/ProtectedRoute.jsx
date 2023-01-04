@@ -16,7 +16,7 @@ export const ProtectedRoute = ({ redirectPath = '/login', children }) => {
       navigate(redirectPath)
       dispatch(logout())
     }
-  }, [userInfo])
+  }, [dispatch, navigate, redirectPath, userInfo])
 
 
   return children ? children : <Outlet />

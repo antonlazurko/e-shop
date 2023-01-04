@@ -1,20 +1,16 @@
 import { DeleteTwoTone } from '@ant-design/icons'
 import { Button, Card,Col, Image,List,Row ,Select,Typography } from 'antd'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate,useParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { addToCart, removeFromCart } from 'redux/actions'
-import { useQuery } from 'utils'
 
 const { Item } = List
 
 export const CartScreen = () => {
   const navigate = useNavigate()
-  const query = useQuery()
-  const { id } = useParams()
-  const quantity = query.get('quantity') ? +query.get('quantity') : '/'
   const dispatch = useDispatch()
   const { cartItems } = useSelector(({ cart }) => cart)
+
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
   }
@@ -22,19 +18,13 @@ export const CartScreen = () => {
     navigate('/shipping')
   }
 
-  useEffect(() => {
-    if(id){
-      dispatch(addToCart(id, quantity))
-    }
-  }, [dispatch, id, quantity])
-
-
   return <Row>
     <Col span={ 8 }>
+      <Link to='/'>Go back</Link>
       <Typography>Shopping Cart</Typography>
       { !cartItems?.length && <Typography>
         Your cart is empty
-        <Link to='/'>Go back</Link></Typography> }
+      </Typography> }
       { cartItems?.length && <List>
         { cartItems.map(({ product, name, image, price, countInStock, quantity }) => (
           <Item key={ product }>

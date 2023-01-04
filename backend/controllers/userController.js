@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
+import { HttpCode, HttpErrorMessage } from '../helpers/constants.js'
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -17,8 +18,8 @@ const authUser = asyncHandler(async(req, res) => {
             token: generateToken(user._id)
         })
     } else {
-        res.status(401)
-        throw Error('Invalid credentials')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw Error(HttpErrorMessage.INVALID_CREDENTIALS)
     }
 })
 
@@ -35,8 +36,8 @@ const getUserProfile = asyncHandler(async(req, res) => {
             isAdmin: user.isAdmin,
         })
     } else {
-        res.status(401)
-        throw new Error('User not found!')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -60,8 +61,8 @@ const updateUserProfile = asyncHandler(async(req, res) => {
             token: generateToken(updatedUser._id)
         })
     } else {
-        res.status(401)
-        throw new Error('User not found!')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -72,8 +73,8 @@ const registerUser = asyncHandler(async(req, res) => {
     const { name, email, password } = req.body
     const userExist = await User.findOne({ email })
     if (userExist) {
-        res.status(400)
-        throw new Error('User already exists!')
+        res.status(HttpCode.BAD_REQUEST)
+        throw new Error(HttpErrorMessage.USER_ALREADY_EXIST)
     }
     const user = await User.create({
         name,
@@ -81,7 +82,7 @@ const registerUser = asyncHandler(async(req, res) => {
         password
     })
     if (user) {
-        res.status(201).json({
+        res.status(HttpCode.CREATED).json({
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -89,8 +90,65 @@ const registerUser = asyncHandler(async(req, res) => {
             token: generateToken(user._id)
         })
     } else{
-        res.status(404)
-        throw new Error('User not found')
+        res.status(HttpCode.NOT_FOUND)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
+    }
+})
+
+// @desc Get all users
+// @route GET /api/users
+// @access Private/Admin
+const getUsers = asyncHandler(async(req, res) => {
+    const users = await User.find({})
+    res.json(users)
+})
+
+// @desc Delete user
+// @route DELETE /api/users:id
+// @access Private/Admin
+const deleteUser = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id)
+    if (user) {
+        await user.remove()
+        res.json({message: `User ${req.params.id} removed`})
+    } else {
+        res.status(HttpCode.NOT_FOUND)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
+    }
+    res.json(users)
+})
+// @desc Get user by ID
+// @route GET /api/users/:id
+// @access Private/Admin
+const getUserById = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id).select('-password')
+    if (user) {
+        res.json(user)
+    } else {
+        res.status(HttpCode.NOT_FOUND)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
+    }
+})
+
+// @desc Update user
+// @route PUT /api/users/:id
+// @access Private/Admin
+const updateUserById = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id)
+    if (user) {
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        user.isAdmin = req.body.isAdmin
+        const updatedUser = await user.save()
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin
+        })
+    } else {
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -98,5 +156,9 @@ export {
     authUser,
     getUserProfile,
     registerUser,
-    updateUserProfile
+    updateUserProfile,
+    getUsers,
+    deleteUser,
+    getUserById,
+    updateUserById
 }
