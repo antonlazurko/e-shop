@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link,useNavigate, useParams } from 'react-router-dom'
 import { listProductDetails, updateProduct } from 'redux/actions'
+import { PRODUCT_UPDATE_RESET } from 'redux/reduxConstatns'
 
 const { Item } = Form
 
@@ -14,28 +15,35 @@ export const ProductUpdateScreen = () => {
   const navigate = useNavigate()
   const [form] = Form.useForm()
 
-  const { loading: createdLoading, error: createdError, product } = useSelector(state => state.productDetails)
+  const { loading, error, product } = useSelector(state => state.productDetails)
+  const { loading: updateLoading, error: updateError, success: successUpdate } = useSelector(state => state.productUpdate)
+
 
   const formSubmitHandler = (formData) => {
-    dispatch(updateProduct(id, formData))
+    dispatch(updateProduct({ ...formData, _id: id , image: '/images/default.jpg' }))
   }
 
   useEffect(() => {
-
-    if(!product?.name || product?._id !== id){
-      dispatch(listProductDetails(id))
-    }else{
-      form.setFieldsValue(product)
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET })
+      navigate('/admin/productlist')
+    }else {
+      if(!product?.name || product?._id !== id){
+        dispatch(listProductDetails(id))
+      }else{
+        form.setFieldsValue(product)
+      }
     }
-  }, [product, navigate, id, dispatch, form])
+  }, [product, navigate, id, dispatch, form, successUpdate])
 
 
   return <>
     <Link to='/admin/productlist'>GO BACK</Link>
-    { createdLoading ?
+    { updateError && <Alert banner={ true } message={ updateError } type='error' /> }
+    { loading || updateLoading?
       <Loader/>
-      : createdError ? (
-        <Alert banner={ true } message={ createdError } type='error' />
+      : error ? (
+        <Alert banner={ true } message={ error } type='error' />
       ) : (
         <Form form={ form }
           onFinish={ formSubmitHandler } initialValues={ product }>

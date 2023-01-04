@@ -17,7 +17,6 @@ import {
 } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
-
 export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
@@ -87,17 +86,17 @@ export const createProduct = (id) => async (dispatch, getState) => {
              error.message })
   }
 }
-export const updateProduct = (id, body) => async (dispatch, getState) => {
+export const updateProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PRODUCT_UPDATE_REQUEST
     })
     const { userLogin: { userInfo } } = getState()
     const config = {
-      headers: {
+      headers: { 'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}` }
     }
-    const data = await ProductService.updateProduct(id, body, config)
+    const data = await ProductService.updateProduct(product?._id, product, config)
 
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data })
 
