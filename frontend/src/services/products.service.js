@@ -16,5 +16,8 @@ export const ProductService = {
   },
   async updateProduct(id, body, config){
     return axios.put(`products/${id}`, body, config)
+  },
+  async uploadProductImage(formData, config){
+    return axios.post('/upload', formData, config)
   }
 }

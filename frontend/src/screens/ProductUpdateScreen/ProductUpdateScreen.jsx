@@ -1,11 +1,11 @@
-import { UploadOutlined } from '@ant-design/icons'
-import { Alert, Button, Form, Input,InputNumber,Upload } from 'antd'
-import { Loader } from 'components/Loader'
-import { useEffect } from 'react'
+import { Alert, Button, Form, Input,InputNumber } from 'antd'
+import { Loader, LoaderSpin } from 'components/Loader'
+import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link,useNavigate, useParams } from 'react-router-dom'
 import { listProductDetails, updateProduct } from 'redux/actions'
 import { PRODUCT_UPDATE_RESET } from 'redux/reduxConstatns'
+import { ProductService } from 'services/products.service'
 
 const { Item } = Form
 
@@ -16,11 +16,32 @@ export const ProductUpdateScreen = () => {
   const [form] = Form.useForm()
 
   const { loading, error, product } = useSelector(state => state.productDetails)
+  const [uploading, setUploading] = useState(false)
   const { loading: updateLoading, error: updateError, success: successUpdate } = useSelector(state => state.productUpdate)
 
 
   const formSubmitHandler = (formData) => {
-    dispatch(updateProduct({ ...formData, _id: id , image: '/images/default.jpg' }))
+    dispatch(updateProduct({ ...formData, _id: id }))
+  }
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const data = await ProductService.uploadProductImage(formData, config)
+
+      form.setFieldValue('image', data)
+      setUploading(false)
+    } catch (error) {
+      console.error(error)
+      setUploading(false)
+    }
   }
 
   useEffect(() => {
@@ -75,17 +96,16 @@ export const ProductUpdateScreen = () => {
             ] }>
             <Input.TextArea placeholder='Description' rows={ 4 }/>
           </Item>
-          { /* <Item name='image' label='Image:'
+          <Item name='image' label='Image:'
             rules={ [
               {
                 required: true,
                 message: 'Please upload an image',
               },
             ] }>
-            <Upload>
-              <Button icon={ <UploadOutlined /> }>Upload Image</Button>
-            </Upload>
-          </Item> */ }
+            <Input type='text' disabled/>
+          </Item>
+          { uploading ? <LoaderSpin/> : <Input type='file' onChange={ uploadFileHandler }accept='image/png, image/jpg, image/jpeg'/> }
           <Item name='brand' label='Brand:'
             rules={ [
               {
