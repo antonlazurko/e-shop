@@ -82,4 +82,17 @@ if (orders) {
 }
 })
 
-export { addOrderItems, getOrderById, updateOrderToPaid, getUserUserOrders }
+// @desc Get all orders
+// @route GET /api/orders/myorders
+// @access Private/Admin
+const getAllOrders = asyncHandler(async(req, res) => {
+    const orders = await Order.find({}).populate('user', 'id name')
+if (orders) {
+    res.json(orders)
+}else{
+    res.status(HttpCode.NOT_FOUND)
+    throw new Error(HttpErrorMessage.ORDERS_NOT_FOUND)
+}
+})
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getUserUserOrders, getAllOrders }

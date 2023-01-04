@@ -13,4 +13,7 @@ export const OrderService = {
   async getMyOrdersList(config){
     return axios.get('orders/myorders', config)
   },
+  async getAllOrdersList(config){
+    return axios.get('orders', config)
+  },
 }
