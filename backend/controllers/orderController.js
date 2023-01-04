@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
+import { HttpCode, HttpErrorMessage } from '../helpers/constants.js'
 
 // @desc Create new order
 // @route POST /api/orders
@@ -15,8 +16,8 @@ const addOrderItems = asyncHandler(async(req, res) => {
             totalPrice
         } = req.body
         if(orderItems?.length === 0){
-            res.status(400)
-            throw new Error('No order items')
+            res.status(HttpCode.BAD_REQUEST)
+            throw new Error(HttpErrorMessage.NO_ORDER_ITEMS)
         } else {
             const order = new Order({
                 orderItems,
@@ -28,7 +29,7 @@ const addOrderItems = asyncHandler(async(req, res) => {
                 shippingPrice,
                 totalPrice})
             const createdOrder = await order.save()
-            res.status(201).json(createdOrder)
+            res.status(HttpCode.CREATED).json(createdOrder)
         }
 })
 
@@ -40,8 +41,8 @@ const getOrderById = asyncHandler(async(req, res) => {
 if (order) {
     res.json(order)
 }else{
-    res.status(404)
-    throw new Error('Order not found')
+    res.status(HttpCode.UNAUTHORIZED)
+    throw new Error(HttpErrorMessage.ORDER_NOT_FOUND)
 }
 })
 
@@ -63,8 +64,8 @@ if (order) {
     const updatedOrder = await order.save()
     res.json(updatedOrder)
 }else{
-    res.status(404)
-    throw new Error('Order not found')
+    res.status(HttpCode.NOT_FOUND)
+    throw new Error(HttpErrorMessage.ORDER_NOT_FOUND)
 }
 })
 
@@ -76,8 +77,8 @@ const getUserUserOrders = asyncHandler(async(req, res) => {
 if (orders) {
     res.json(orders)
 }else{
-    res.status(404)
-    throw new Error('Orders not found')
+    res.status(HttpCode.NOT_FOUND)
+    throw new Error(HttpErrorMessage.ORDERS_NOT_FOUND)
 }
 })
 

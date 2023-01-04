@@ -1,11 +1,12 @@
+import { HttpCode } from '../helpers/constants.js'
 const notFound = (req,res,next) => {
     const error = new Error(`Not found - ${req.originalUrl}`)
-    res.status(404)
+    res.status(HttpCode.NOT_FOUND)
     next(error)
 }
 
 const errorHandler = (err, req,res,next) => {
-    const statusCode = res.statusCode === 200 ? 500 : res.statusCode
+    const statusCode = res.statusCode === HttpCode.OK ? HttpCode.INTERNAL_SERVER_ERROR : res.statusCode
     res.status(statusCode)
     res.json({
         message: err.message,

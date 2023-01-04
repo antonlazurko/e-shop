@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import { HttpCode } from '../helpers/constants.js';
+
 
 const protect = asyncHandler(async (req, res, next) => {
     let token
@@ -12,13 +14,13 @@ if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
         req.user = await User.findById(decoded?.id).select('-password')
     } catch (error) {
         console.error(error);
-        res.status(401)
-        throw new Error('Not authorized, token failed!')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.NOT_AUTHORIZED_TOKENFAILED)
     }
 }
 if (!token) {
-    res.status(401)
-    throw new Error('Not authorized!')
+    res.status(HttpCode.UNAUTHORIZED)
+    throw new Error(HttpErrorMessage.NOT_AUTHORIZED)
 }
     next()
 })
@@ -26,8 +28,8 @@ const admin = (req, res, next) => {
     if (req?.user?.isAdmin) {
         next()
       } else {
-        res.status(401)
-        throw new Error('Not authorized as an admin')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.NOT_AUTHORIZED_AS_AN_ADMIN)
       }
 }
 export {protect, admin}

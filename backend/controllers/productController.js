@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import { HttpCode } from '../helpers/constants.js'
 
 // @desc Fetch all products
 // @route GET /api/products
@@ -17,8 +18,8 @@ const getProductById = asyncHandler(async(req, res) => {
         if (product) {
             res.json(product)
         } else {
-            res.status(404)
-            throw new Error('Product not found')
+            res.status(HttpCode.NOT_FOUND)
+            throw new Error(HttpErrorMessage.PRODUCT_NOT_FOUND)
         }
 })
 

@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
+import { HttpCode, HttpErrorMessage } from '../helpers/constants.js'
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -17,8 +18,8 @@ const authUser = asyncHandler(async(req, res) => {
             token: generateToken(user._id)
         })
     } else {
-        res.status(401)
-        throw Error('Invalid credentials')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw Error(HttpErrorMessage.INVALID_CREDENTIALS)
     }
 })
 
@@ -35,8 +36,8 @@ const getUserProfile = asyncHandler(async(req, res) => {
             isAdmin: user.isAdmin,
         })
     } else {
-        res.status(401)
-        throw new Error('User not found!')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -60,8 +61,8 @@ const updateUserProfile = asyncHandler(async(req, res) => {
             token: generateToken(updatedUser._id)
         })
     } else {
-        res.status(401)
-        throw new Error('User not found!')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -72,8 +73,8 @@ const registerUser = asyncHandler(async(req, res) => {
     const { name, email, password } = req.body
     const userExist = await User.findOne({ email })
     if (userExist) {
-        res.status(400)
-        throw new Error('User already exists!')
+        res.status(HttpCode.BAD_REQUEST)
+        throw new Error(HttpErrorMessage.USER_ALREADY_EXIST)
     }
     const user = await User.create({
         name,
@@ -81,7 +82,7 @@ const registerUser = asyncHandler(async(req, res) => {
         password
     })
     if (user) {
-        res.status(201).json({
+        res.status(HttpCode.CREATED).json({
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -89,8 +90,8 @@ const registerUser = asyncHandler(async(req, res) => {
             token: generateToken(user._id)
         })
     } else{
-        res.status(404)
-        throw new Error('User not found')
+        res.status(HttpCode.NOT_FOUND)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -111,8 +112,8 @@ const deleteUser = asyncHandler(async(req, res) => {
         await user.remove()
         res.json({message: `User ${req.params.id} removed`})
     } else {
-        res.status(404)
-        throw new Error('User not found')
+        res.status(HttpCode.NOT_FOUND)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
     res.json(users)
 })
@@ -124,8 +125,8 @@ const getUserById = asyncHandler(async(req, res) => {
     if (user) {
         res.json(user)
     } else {
-        res.status(404)
-        throw new Error('User not found')
+        res.status(HttpCode.NOT_FOUND)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 
@@ -146,8 +147,8 @@ const updateUserById = asyncHandler(async(req, res) => {
             isAdmin: updatedUser.isAdmin
         })
     } else {
-        res.status(401)
-        throw new Error('User not found!')
+        res.status(HttpCode.UNAUTHORIZED)
+        throw new Error(HttpErrorMessage.USER_NOT_FOUND)
     }
 })
 

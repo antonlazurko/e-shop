@@ -1,3 +1,4 @@
+import { USER_NOT_FOUND } from 'constants'
 import {
   CART_RESET,
   MY_ORDERS_LIST_FAIL,
@@ -15,7 +16,6 @@ import {
 import { OrderService } from 'services/order.service.js'
 
 import { logout } from './userActions'
-
 
 export const createdOrder = (order) => async(dispatch, getState) => {
   try {
@@ -38,7 +38,7 @@ export const createdOrder = (order) => async(dispatch, getState) => {
     const message = error?.response?.data?.message ?
       error?.data?.message :
       error?.message
-    if (message === 'User not found!') {
+    if (message === USER_NOT_FOUND) {
       dispatch(logout())
     }
     dispatch({
@@ -67,7 +67,7 @@ export const getOrderDetails = (id) => async(dispatch, getState) => {
     const message = error?.response?.data?.message ?
       error?.data?.message :
       error?.message
-    if (message === 'User not found!') {
+    if (message === USER_NOT_FOUND) {
       dispatch(logout())
     }
     dispatch({
@@ -101,7 +101,7 @@ export const payOrder = (orderId, paymentResult) => async(dispatch, getState) =>
     const message = error?.response?.data?.message ?
       error?.data?.message :
       error?.message
-    if (message === 'User not found!') {
+    if (message === USER_NOT_FOUND) {
       dispatch(logout())
     }
     dispatch({
@@ -131,7 +131,7 @@ export const myOrdersList = () => async(dispatch, getState) => {
     const message = error?.response?.data?.message ?
       error?.data?.message :
       error?.message
-    if (message === 'User not found!') {
+    if (message === USER_NOT_FOUND) {
       dispatch(logout())
     }
     dispatch({
