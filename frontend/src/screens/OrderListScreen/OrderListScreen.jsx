@@ -57,10 +57,10 @@ export const OrderListScreen = () => {
       title: 'DELIVERED',
       key: 'isDelivered',
       dataIndex: 'isDelivered',
-      render: (_, { isDelivered }) => isDelivered ? (
+      render: (_, { isDelivered, deliveredAt }) => isDelivered ? (
         <Tag
           color='success'>
-          DELIVERED
+          { deliveredAt?.substring(0, 10) }
         </Tag>
       )
         :

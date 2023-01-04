@@ -1,20 +1,24 @@
-import {  Alert, Card,Col, Image, List, Row, Space,Typography } from 'antd'
+import {  Alert, Button,Card,Col, Image, List, Row, Space,Typography } from 'antd'
 import { Loader } from 'components/Loader'
 import { PayPalButtonWrapper } from 'components/PayPalButtonWrapper'
 import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { Link,  useParams } from 'react-router-dom'
-import { getOrderDetails, payOrder } from 'redux/actions'
-import { ORDER_PAY_RESET } from 'redux/reduxConstatns'
+import { Link,  useNavigate,useParams } from 'react-router-dom'
+import { deliverOrder,getOrderDetails, payOrder } from 'redux/actions'
+import { ORDER_DELIVER_RESET,ORDER_PAY_RESET } from 'redux/reduxConstatns'
 import { PaymentService } from 'services/payment.service'
 
 const { Item : ListItem } = List
 
 export const OrderScreen = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { userInfo } = useSelector(state => state.userLogin)
+
   const { order = {}, loading, error } = useSelector(state => state.orderDetails)
   const { success: successPay } = useSelector(state => state.orderPay)
+  const { success: successDeliver, loading: loadingDeliver } = useSelector(state => state.orderDeliver)
   const [clientId, setClientId] = useState(null)
   const {
     shippingAddress,
@@ -36,20 +40,29 @@ export const OrderScreen = () => {
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(_id, paymentResult))
   }
+  const deliverHandler = () => {
+    dispatch(deliverOrder(_id))
+  }
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate('/login')
+    }
     (async() => {
       const clientId = await PaymentService.getPayPalClientID()
       clientId && setClientId(clientId)
     }
     )()
-    if (!order?._id || successPay || order?._id !== id) {
+    if (!order?._id || successPay || successDeliver || order?._id !== id) {
       dispatch({
         type: ORDER_PAY_RESET
       })
+      dispatch({
+        type: ORDER_DELIVER_RESET
+      })
       dispatch(getOrderDetails(id))
     }
-  }, [dispatch, id, order?._id, successPay])
+  }, [dispatch, id, navigate, order?._id, successDeliver, successPay, userInfo])
 
   return (
     loading ?
@@ -79,7 +92,7 @@ export const OrderScreen = () => {
                   { shippingAddress?.country }
                 </Typography.Text>
                 { isDelivered ?
-                  <Alert banner={ true } message={ `Delivered at ${deliveredAt}` } type='success' />
+                  <Alert banner={ true } message={ `Delivered at ${deliveredAt?.substring(0, 10)}` } type='success' />
                   : <Alert banner={ true } message={ 'Your order is not delivered' } type='warning' /> }
               </Space>
             </ListItem>
@@ -92,7 +105,7 @@ export const OrderScreen = () => {
                   Method: { paymentMethod?.toUpperCase() }
                 </Typography.Text>
                 { isPaid ?
-                  <Alert banner={ true } message={ `Paid at ${paidAt}` } type='success' />
+                  <Alert banner={ true } message={ `Paid at ${paidAt?.substring(0, 10)}` } type='success' />
                   : <Alert banner={ true } message={ 'Your order is not paid' } type='warning' /> }
               </Space>
             </ListItem>
@@ -159,6 +172,11 @@ export const OrderScreen = () => {
                 successPaymentHandler={ successPaymentHandler }
               />
             ) }
+            { loadingDeliver && <Loader/> }
+            { isPaid && userInfo?.isAdmin && !isDelivered &&(
+              <Button onClick={ deliverHandler }>Mark as delivered</Button>
+            )
+            }
           </List>
         )
   )

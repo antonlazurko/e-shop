@@ -3,7 +3,7 @@ import {
   allOrdersListReducer,  cartReducer,
   myOrdersListReducer,
   orderCreateReducer,
-  orderDetailsReducer,
+  orderDeliverReducer,  orderDetailsReducer,
   orderPayReducer,
   productCreateReducer,
   productDeleteReducer,
@@ -37,6 +37,7 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  orderDeliver: orderDeliverReducer,
   myOrdersList: myOrdersListReducer,
   allOrdersList: allOrdersListReducer
 })
