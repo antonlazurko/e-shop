@@ -20,5 +20,6 @@ export const HttpCode = {
     NOT_AUTHORIZED_TOKENFAILED: 'Not authorized, token failed',
     NOT_AUTHORIZED: 'Not authorized',
     NOT_AUTHORIZED_AS_AN_ADMIN: 'Not authorized as an admin',
-    INVALID_CREDENTIALS: 'Invalid credentials'
+    INVALID_CREDENTIALS: 'Invalid credentials',
+    PRODUCT_ALREADY_REVIEWED: 'Product already reviewed',
   }
