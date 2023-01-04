@@ -42,15 +42,15 @@ const deleteProduct = asyncHandler(async(req, res) => {
 // @access Private/Admin
 const createProduct = asyncHandler(async(req, res) => {
     const product = new Product({
-        name: 'QWE',
-        price: 100,
+        name: 'Default Name',
+        price: 0,
         user: req.user._id,
-        image: '/images/test.jpg',
-        brand: 'QWE Int',
-        category: 'Phones',
-        countInStock: 10,
+        image: '/images/default.jpg',
+        brand: 'Default brand',
+        category: 'Default category',
+        countInStock: 0,
         numReviews: 0,
-        description: 'SOME TEST TEXT'
+        description: 'Default description'
     })
     const createdProduct = await product.save()
     res.status(HttpCode.CREATED).json(createdProduct)

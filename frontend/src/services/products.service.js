@@ -10,5 +10,11 @@ export const ProductService = {
   },
   async deleteProduct(id, config){
     return axios.delete(`products/${id}`, config)
+  },
+  async createProduct(config){
+    return axios.post('products/', {}, config)
+  },
+  async updateProduct(id, body, config){
+    return axios.put(`products/${id}`, body, config)
   }
 }

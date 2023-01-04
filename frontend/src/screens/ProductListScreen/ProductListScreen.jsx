@@ -4,14 +4,21 @@ import { Loader } from 'components/Loader'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { deleteProduct,listProducts } from 'redux/actions'
+import { createProduct,deleteProduct,listProducts } from 'redux/actions'
+import { PRODUCT_CREATE_RESET } from 'redux/reduxConstatns'
 
 export const ProductListScreen = () => {
 
   const {
     productList:{ products, loading, error },
     userLogin:{ userInfo },
-    productDelete: { success: successDelete, error: errorDelete, loading: loadingDelete } } = useSelector(state => state)
+    productDelete: { success: successDelete, error: errorDelete, loading: loadingDelete },
+    productCreated: {
+      loading: loadingCreate,
+      error: errorCreate,
+      success: successCreate,
+      product: createdProduct,
+    } } = useSelector(state => state)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -19,7 +26,8 @@ export const ProductListScreen = () => {
   const deleteProductHandler = (id) => {
     dispatch(deleteProduct(id))
   }
-  const createProductHandler = () => {
+  const createProductHandler = (value) => {
+    dispatch(createProduct())
   }
 
   const columns = [
@@ -76,19 +84,24 @@ export const ProductListScreen = () => {
   ]
 
   useEffect(() => {
-    if (userInfo?.isAdmin || successDelete) {
-      dispatch(listProducts())
-    }else {
+    dispatch({ type: PRODUCT_CREATE_RESET })
+    if (!userInfo?.isAdmin) {
       navigate('/login')
     }
-  },[dispatch, navigate, userInfo?.isAdmin, successDelete])
+    if (successCreate) {
+      navigate(`/admin/product/${createdProduct?._id}/edit`)
+    } else {
+      dispatch(listProducts())
+    }
+  },[dispatch, navigate, userInfo?.isAdmin,successDelete, successCreate, createdProduct?._id])
 
   return (
     <>
       <Typography>Products</Typography>
       <Button icon={ <PlusOutlined /> } onClick={ createProductHandler }>Create Product</Button>
       { errorDelete && <Alert banner={ true } message={ errorDelete } type='error'/> }
-      { loading || loadingDelete ?
+      { errorCreate && <Alert banner={ true } message={ errorCreate } type='error'/> }
+      { loading || loadingDelete || loadingCreate ?
         <Loader/> :
         error ?
           <Alert banner={ true } message={ error } type='error'/> :
