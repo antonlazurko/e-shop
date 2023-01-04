@@ -1,26 +1,28 @@
-import { QuestionCircleOutlined } from '@ant-design/icons'
-import { Alert,Button, Popconfirm,Table, Tag } from 'antd'
+import { PlusOutlined,QuestionCircleOutlined } from '@ant-design/icons'
+import { Alert,Button, Popconfirm,Table, Typography } from 'antd'
 import { Loader } from 'components/Loader'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { deleteUser,usersList } from 'redux/actions'
+import { listProducts } from 'redux/actions'
 
-export const UserListScreen = () => {
-  const { userList:{ users, loading, error }, userLogin:{ userInfo }, userDelete: { success: deleteSuccess } } = useSelector(state => state)
+export const ProductListScreen = () => {
+
+  const { productList:{ products, loading, error }, userLogin:{ userInfo } } = useSelector(state => state)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const userDeleteHandler = (id)=> {
-    dispatch(deleteUser(id))
+  const deleteProductHandler = (id) => {}
+
+  const createProductHandler = () => {
+
   }
 
   const columns = [
     {
       title: 'ID',
       dataIndex: '_id'
-
     },
     {
       title: 'NAME',
@@ -29,39 +31,31 @@ export const UserListScreen = () => {
 
     },
     {
-      title: 'EMAIL',
-      key: 'email',
-      dataIndex: 'email',
-      render: (_, { email }) => (<a href={ `mailto:${email}` }>{ email }</a>)
+      title: 'PRICE',
+      key: 'price',
+      dataIndex: 'price'
+
     },
     {
-      title: 'ADMIN',
-      key: 'isAdmin',
-      dataIndex: 'isAdmin',
-      render: (_, { isAdmin }) => isAdmin ? (
-        <Tag
-          color='success'>
-          ADMIN
-        </Tag>
-      )
-        :
-        (
-          <Tag
-            color='warning'>
-            NOT AN ADMIN
-          </Tag>
-        )
+      title: 'CATEGORY',
+      key: 'category',
+      dataIndex: 'category',
+    },
+    {
+      title: 'BRAND',
+      key: 'brand',
+      dataIndex: 'brand',
     },
     {
       title: '',
       key: 'linkToUser',
       dataIndex: 'linkToUser',
       render: (_, { _id }) => (<>
-        <Link to={ `/admin/user/${_id}/edit` }>EDIT</Link>
+        <Link to={ `/admin/product/${_id}/edit` }>EDIT</Link>
         <Popconfirm
           placement='top'
-          title='Are you shure you want to delete this user?'
-          onConfirm={ () => userDeleteHandler(_id) }
+          title='Are you shure you want to delete this product?'
+          onConfirm={ () => deleteProductHandler(_id) }
           okText='Delete anyway'
           cancelText='No'
           icon={
@@ -80,14 +74,16 @@ export const UserListScreen = () => {
 
   useEffect(() => {
     if (userInfo?.isAdmin) {
-      dispatch(usersList())
+      dispatch(listProducts())
     }else {
       navigate('/login')
     }
-  },[dispatch, navigate, deleteSuccess, userInfo?.isAdmin])
+  },[dispatch, navigate, userInfo?.isAdmin])
+
   return (
     <>
-      <div>Users</div>
+      <Typography>Products</Typography>
+      <Button icon={ <PlusOutlined /> } onClick={ createProductHandler }>Create Product</Button>
       { loading ?
         <Loader/> :
         error ?
@@ -95,7 +91,7 @@ export const UserListScreen = () => {
           (
             <Table
               columns={ columns }
-              dataSource={ users }
+              dataSource={ products }
               rowKey={ ({ _id }) => _id }></Table>
           ) }
     </>
