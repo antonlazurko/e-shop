@@ -7,5 +7,8 @@ export const ProductService = {
   },
   async getProductById(id){
     return axios.get(`products/${id}`)
+  },
+  async deleteProduct(id, config){
+    return axios.delete(`products/${id}`, config)
   }
 }

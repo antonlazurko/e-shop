@@ -4,19 +4,22 @@ import { Loader } from 'components/Loader'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { listProducts } from 'redux/actions'
+import { deleteProduct,listProducts } from 'redux/actions'
 
 export const ProductListScreen = () => {
 
-  const { productList:{ products, loading, error }, userLogin:{ userInfo } } = useSelector(state => state)
+  const {
+    productList:{ products, loading, error },
+    userLogin:{ userInfo },
+    productDelete: { success: successDelete, error: errorDelete, loading: loadingDelete } } = useSelector(state => state)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const deleteProductHandler = (id) => {}
-
+  const deleteProductHandler = (id) => {
+    dispatch(deleteProduct(id))
+  }
   const createProductHandler = () => {
-
   }
 
   const columns = [
@@ -73,18 +76,19 @@ export const ProductListScreen = () => {
   ]
 
   useEffect(() => {
-    if (userInfo?.isAdmin) {
+    if (userInfo?.isAdmin || successDelete) {
       dispatch(listProducts())
     }else {
       navigate('/login')
     }
-  },[dispatch, navigate, userInfo?.isAdmin])
+  },[dispatch, navigate, userInfo?.isAdmin, successDelete])
 
   return (
     <>
       <Typography>Products</Typography>
       <Button icon={ <PlusOutlined /> } onClick={ createProductHandler }>Create Product</Button>
-      { loading ?
+      { errorDelete && <Alert banner={ true } message={ errorDelete } type='error'/> }
+      { loading || loadingDelete ?
         <Loader/> :
         error ?
           <Alert banner={ true } message={ error } type='error'/> :

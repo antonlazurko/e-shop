@@ -5,7 +5,7 @@ import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
-  productDetailsReducer,
+  productDeleteReducer,  productDetailsReducer,
   productListReducer,
   userDeleteReducer,
   userDetailsReducer,
@@ -20,18 +20,19 @@ import thunk from 'redux-thunk'
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productDelete: productDeleteReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userUpdate:userUpdateReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   myOrdersList: myOrdersListReducer,
-  userList: userListReducer,
-  userDelete: userDeleteReducer,
-  userUpdate:userUpdateReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
