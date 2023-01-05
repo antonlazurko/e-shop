@@ -5,10 +5,14 @@ import { mediaQueryies } from 'constants'
 import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import { useLocation } from 'react-router-dom'
 import { listProducts } from 'redux/actions'
+
 const { largedesktopOrLaptop, smallDesktopOrLaptop, tablet, mobile } = mediaQueryies
 
 export const HomeScreen = () => {
+  const { search } = useLocation()
+  const searhQuery = search?.substring(1) || ''
   const dispatch = useDispatch()
   const { loading, error, products } = useSelector(state => state.productList)
 
@@ -40,8 +44,8 @@ export const HomeScreen = () => {
     }
   }
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+    dispatch(listProducts(searhQuery))
+  }, [dispatch,searhQuery])
 
   return <>
     <h1>Latest products</h1>

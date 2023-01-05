@@ -6,8 +6,15 @@ import { HttpCode, HttpErrorMessage } from '../helpers/constants.js'
 // @route GET /api/products
 // @access Public
 const getProducts = asyncHandler(async(req, res) => {
-        const products = await Product.find({})
-        res.json(products)
+    const keyword = req.query.query ? {
+            name: {
+                $regex: req.query.query,
+                $options: 'i',
+            }}
+        : {}
+
+    const products = await Product.find({...keyword})
+    res.json(products)
 })
 
 // @desc Fetch single product
