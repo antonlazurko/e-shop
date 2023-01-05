@@ -134,7 +134,7 @@ export const ProductScreen = () => {
                 { product?.reviews?.map(({ _id, name, rating, comment, createdAt }) => (
                   <ListItem key={ _id }>
                     <Typography >{ name }</Typography>
-                    <Rate defaultValue={ rating }/>
+                    <Rate disabled defaultValue={ rating }/>
                     <Typography >{ createdAt }</Typography>
                     <Typography >{ comment }</Typography>
                   </ListItem>
