@@ -1,27 +1,32 @@
-import { Alert, Button, Form, Input,InputNumber } from 'antd'
+import { Alert, Form, Input,InputNumber } from 'antd'
 import { Loader, LoaderSpin } from 'components/Loader'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { Link,useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { listProductDetails, updateProduct } from 'redux/actions'
 import { PRODUCT_UPDATE_RESET } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
+import { allowOnlyNumbers } from 'utils'
 
 const { Item } = Form
 
-export const ProductUpdateScreen = () => {
-  const { id } = useParams()
+export const ProductUpdateScreen = ({ id, setIsModalOpen }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
 
-  const { loading, error, product } = useSelector(state => state.productDetails)
+  const {
+    productDetails: { loading, error, product },
+    productUpdate: { loading: updateLoading, error: updateError, success: successUpdate } } = useSelector(state => state)
+
   const [uploading, setUploading] = useState(false)
-  const { loading: updateLoading, error: updateError, success: successUpdate } = useSelector(state => state.productUpdate)
 
 
   const formSubmitHandler = (formData) => {
     dispatch(updateProduct({ ...formData, _id: id }))
+    if(!updateError){
+      setIsModalOpen(false)
+    }
   }
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
@@ -47,9 +52,8 @@ export const ProductUpdateScreen = () => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET })
-      navigate('/admin/productlist')
     }else {
-      if(!product?.name || product?._id !== id){
+      if(!product?._id || product?._id !== id){
         dispatch(listProductDetails(id))
       }else{
         form.setFieldsValue(product)
@@ -59,14 +63,13 @@ export const ProductUpdateScreen = () => {
 
 
   return <>
-    <Link to='/admin/productlist'>GO BACK</Link>
     { updateError && <Alert banner={ true } message={ updateError } type='error' /> }
     { loading || updateLoading?
       <Loader/>
       : error ? (
         <Alert banner={ true } message={ error } type='error' />
       ) : (
-        <Form form={ form }
+        <Form form={ form } name='productEdit'
           onFinish={ formSubmitHandler } initialValues={ product }>
           <Item name='name' label='Name:' rules={ [
             {
@@ -81,10 +84,10 @@ export const ProductUpdateScreen = () => {
               {
                 required: true,
                 type: 'number',
-                message: 'Please input your Price',
-              },
+                message: 'Please input your price',
+              }
             ] }>
-            <InputNumber placeholder='Price'/>
+            <InputNumber type='number' placeholder='Price' min={ 0 }/>
           </Item>
           <Item name='description' label='Description:'
             rules={ [
@@ -92,7 +95,7 @@ export const ProductUpdateScreen = () => {
                 required: true,
                 message: 'Please input your description',
               },
-              { min: 5, message: 'Description must be minimum 5 characters.' },
+              { min: 10, message: 'Description must be minimum 10 characters.' },
             ] }>
             <Input.TextArea placeholder='Description' rows={ 4 }/>
           </Item>
@@ -130,12 +133,9 @@ export const ProductUpdateScreen = () => {
                 required: true,
                 type: 'number',
                 message: 'Please input your count',
-              },
+              }
             ] }>
-            <InputNumber placeholder='Count In Stock'/>
-          </Item>
-          <Item>
-            <Button htmlType='submit'>Update</Button>
+            <InputNumber placeholder='Count In Stock' min={ 0 } onKeyPress={ (event) => allowOnlyNumbers(event) } />
           </Item>
         </Form>
       ) }

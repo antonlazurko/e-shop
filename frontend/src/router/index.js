@@ -7,7 +7,6 @@ import { PaymentScreen } from 'screens/PaymentScreen'
 import { PlaceOrderScreen } from 'screens/PlaceOrderScreen'
 import { ProductListScreen } from 'screens/ProductListScreen'
 import { ProductScreen } from 'screens/ProductScreen'
-import { ProductUpdateScreen } from 'screens/ProductUpdateScreen'
 import { ProfileScreen } from 'screens/ProfileScreen'
 import { ShippingScreen } from 'screens/ShippingScreen'
 import { UserEditScreen } from 'screens/UserEditScreen'
@@ -38,11 +37,6 @@ const routes = [{
   path: '/',
   children: [{ path: '/admin/productlist',
     element: <ProtectedRoute><ProductListScreen/></ProtectedRoute> }
-  ] },
-{
-  path: '/',
-  children: [{ path: '/admin/product/:id/edit',
-    element: <ProtectedRoute><ProductUpdateScreen/></ProtectedRoute> }
   ] },
 {
   path: '/',
