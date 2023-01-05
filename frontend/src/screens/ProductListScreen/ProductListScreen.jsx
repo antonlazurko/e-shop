@@ -113,10 +113,12 @@ export const ProductListScreen = () => {
       dispatch(listProducts())
       dispatch({ type: PRODUCT_DELETE_RESET })
     }
-    if (!products?.length) {
-      dispatch(listProducts())
-    }
   },[dispatch, navigate, userInfo?.isAdmin, successDelete, successCreate, successUpdate])
+
+  useEffect(() => {
+    dispatch(listProducts())
+  }, [])
+
 
   return (
     <>

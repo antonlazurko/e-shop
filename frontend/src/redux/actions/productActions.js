@@ -1,6 +1,9 @@
 import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_CREATE_REVIEW_REQUEST,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_REQUEST,
@@ -23,10 +26,10 @@ export const listProducts = () => async (dispatch) => {
     const data = await ProductService.getProducts()
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: PRODUCT_LIST_FAIL, payload:
-         error.response && error.response.data.message ?
-           error.data.message :
-           error.message })
+    dispatch({ type: PRODUCT_LIST_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
   }
 }
 
@@ -36,10 +39,10 @@ export const listProductDetails = (id) => async (dispatch) => {
     const data = await ProductService.getProductById(id)
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: PRODUCT_DETAILS_FAIL, payload:
-           error.response && error.response.data.message ?
-             error.data.message :
-             error.message })
+    dispatch({ type: PRODUCT_DETAILS_FAIL,
+      payload:   error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
   }
 }
 
@@ -58,10 +61,10 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data })
 
   } catch (error) {
-    dispatch({ type: PRODUCT_DELETE_FAIL, payload:
-           error.response && error.response.data.message ?
-             error.data.message :
-             error.message })
+    dispatch({ type: PRODUCT_DELETE_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
   }
 }
 
@@ -80,10 +83,10 @@ export const createProduct = (id) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data })
 
   } catch (error) {
-    dispatch({ type: PRODUCT_CREATE_FAIL, payload:
-           error.response && error.response.data.message ?
-             error.data.message :
-             error.message })
+    dispatch({ type: PRODUCT_CREATE_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
   }
 }
 export const updateProduct = (product) => async (dispatch, getState) => {
@@ -101,9 +104,31 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data })
 
   } catch (error) {
-    dispatch({ type: PRODUCT_UPDATE_FAIL, payload:
-           error.response && error.response.data.message ?
-             error.data.message :
-             error.message })
+    dispatch({ type: PRODUCT_UPDATE_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
+  }
+}
+
+export const createProductReview = (productId, review) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_REQUEST
+    })
+    const { userLogin: { userInfo } } = getState()
+    const config = {
+      headers: { 'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}` }
+    }
+    const data = await ProductService.createProductReview(productId, review, config)
+
+    dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS, payload: data })
+
+  } catch (error) {
+    dispatch({ type: PRODUCT_CREATE_REVIEW_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
   }
 }

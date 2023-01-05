@@ -19,5 +19,8 @@ export const ProductService = {
   },
   async uploadProductImage(formData, config){
     return axios.post('/upload', formData, config)
+  },
+  async createProductReview(id, review, config){
+    return axios.post(`products/${id}/reviews`, review, config)
   }
 }

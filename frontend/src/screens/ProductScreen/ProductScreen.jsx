@@ -1,19 +1,27 @@
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
-import { Button,Card, Col, Image,List,Rate,Row, Select,Tag,Typography } from 'antd'
+import { Alert, Button,Card, Col, Form,Image,Input,List,Rate,Row,Select,Tag,Typography } from 'antd'
 import { Loader } from 'components/Loader'
 import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link ,useParams } from 'react-router-dom'
-import { addToCart,listProductDetails } from 'redux/actions'
+import { addToCart,createProductReview,listProductDetails } from 'redux/actions'
+import { PRODUCT_CREATE_REVIEW_RESET } from 'redux/reduxConstatns'
 
-
+const { Item } = Form
+const { TextArea } = Input
 const { Item: ListItem } = List
 
+
 export const ProductScreen = () => {
+  const [form] = Form.useForm()
   const { id } = useParams()
   const dispatch = useDispatch()
-  const { loading, error, product } = useSelector(state => state.productDetails)
+  const {
+    productDetails:{ loading, error, product },
+    productReviewCreate: { success, error: errorProductReview },
+    userLogin: { userInfo }
+  } = useSelector(state => state)
 
   const { name, image,rating, price , description, countInStock, numReviews } = product
   const [quantity, setQuantity] = useState(1)
@@ -23,10 +31,21 @@ export const ProductScreen = () => {
       dispatch(addToCart(id, quantity))
     }
   }
+  const reviewFormSubmitHandler = (reviewFormData) => {
+    dispatch(createProductReview(id, reviewFormData))
+  }
 
   useEffect(() => {
+    if(success){
+      form.resetFields()
+      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
+    }
     dispatch(listProductDetails(id))
-  }, [dispatch, id])
+  }, [dispatch, id, success])
+  useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
+  }, [])
+
 
   return <>
     <Link to='/'>Back</Link>
@@ -35,7 +54,7 @@ export const ProductScreen = () => {
       :
       error
         ? <div>{ error }</div>
-        : (
+        : (<>
           <Row>
             <Col span={ 12 }>
               <Image
@@ -107,6 +126,55 @@ export const ProductScreen = () => {
               </Card>
             </Col>
           </Row>
+          <Row>
+            <Col>
+              <Typography>Reviews</Typography>
+              { !product?.numReviews && <Alert banner={ true } message={ 'No reviews' } type='info' /> }
+              <List>
+                { product?.reviews?.map(({ _id, name, rating, comment, createdAt }) => (
+                  <ListItem key={ _id }>
+                    <Typography >{ name }</Typography>
+                    <Rate defaultValue={ rating }/>
+                    <Typography >{ createdAt }</Typography>
+                    <Typography >{ comment }</Typography>
+                  </ListItem>
+                )) }
+              </List>
+              <List>
+                <Typography>Write a Customer Review</Typography>
+                { errorProductReview && <Alert closable={ true } banner={ true } message={ errorProductReview } type='error' /> }
+                { userInfo ? (
+                  <Form form={ form } name='review-form' onFinish={ reviewFormSubmitHandler }>
+                    <Item name='rating' label='rating:' rules={ [
+                      {
+                        required: true,
+                        message: 'Please select product rating',
+                      },
+                    ] }>
+                      <Rate/>
+                    </Item>
+                    <Item name='comment' label='Comment:' rules={ [
+                      {
+                        required: true,
+                        message: 'Please input comment',
+                      },
+                      {
+                        min: 3,
+                        message: 'Comment must be minimum 3 characters.',
+                      },
+                    ] }>
+                      <TextArea rows={ 3 } />
+                    </Item>
+                    <Item><Button htmlType='submit'>Give  a review</Button></Item>
+                  </Form>
+                ) : <Alert
+                  banner={ true }
+                  message={ <Typography>Please <Link to='/login'>sign in</Link> to write a review</Typography> }
+                  type='info' /> }
+              </List>
+            </Col>
+          </Row>
+        </>
         ) }
   </>
 }
