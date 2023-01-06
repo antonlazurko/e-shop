@@ -1,10 +1,12 @@
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Alert,Button, Popconfirm,Table, Tag } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { allOrdersList } from 'redux/actions'
+
 
 export const OrderListScreen = () => {
   const { allOrdersList:{ orders, loading, error }, userLogin:{ userInfo } } = useSelector(state => state)
@@ -77,22 +79,6 @@ export const OrderListScreen = () => {
       dataIndex: 'linkToUser',
       render: (_, { _id }) => (<>
         <Link to={ `/orders/${_id}/` }>DETEILS</Link>
-        { /* <Popconfirm
-          placement='top'
-          title='Are you shure you want to delete this user?'
-          onConfirm={ () => userDeleteHandler(_id) }
-          okText='Delete anyway'
-          cancelText='No'
-          icon={
-            <QuestionCircleOutlined
-              style={ {
-                color: 'red',
-              } }
-            />
-          }
-        >
-          <Button>DELETE</Button>
-        </Popconfirm> */ }
       </>)
     },
   ]
@@ -106,6 +92,7 @@ export const OrderListScreen = () => {
   },[dispatch, navigate, userInfo?.isAdmin])
   return (
     <>
+      <Meta screen='Order List'/>
       <div>Users</div>
       { loading ?
         <Loader/> :

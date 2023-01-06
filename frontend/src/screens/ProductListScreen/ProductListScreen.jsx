@@ -1,6 +1,7 @@
 import { DeleteOutlined,EditOutlined,PlusOutlined,QuestionCircleOutlined } from '@ant-design/icons'
 import { Alert,Button, Modal,Popconfirm,Row,Table, Typography } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { Paginate } from 'components/Paginate'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +10,7 @@ import { createProduct,deleteProduct,listProducts } from 'redux/actions'
 import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET,PRODUCT_UPDATE_RESET } from 'redux/reduxConstatns'
 import { ProductUpdateScreen } from 'screens/ProductUpdateScreen'
 import { useQuery } from 'utils'
+
 
 export const ProductListScreen = () => {
   const query = useQuery()
@@ -127,6 +129,7 @@ export const ProductListScreen = () => {
 
   return (
     <>
+      <Meta screen='Product List'/>
       <Typography>Products</Typography>
       <Button icon={ <PlusOutlined /> } onClick={ createProductHandler }>Create Product</Button>
       { errorDelete && <Alert banner={ true } message={ errorDelete } type='error'/> }

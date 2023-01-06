@@ -1,6 +1,7 @@
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Alert,Button, Popconfirm,Table, Tag } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -87,6 +88,7 @@ export const UserListScreen = () => {
   },[dispatch, navigate, deleteSuccess, userInfo?.isAdmin])
   return (
     <>
+      <Meta screen='User List'/>
       <div>Users</div>
       { loading ?
         <Loader/> :

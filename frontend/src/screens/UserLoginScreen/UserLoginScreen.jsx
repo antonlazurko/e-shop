@@ -1,10 +1,12 @@
 import { Alert, Button, Col,Form, Input,Row } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from 'redux/actions/userActions'
 import { useQuery } from 'utils'
+
 
 
 const { Item } = Form
@@ -31,40 +33,43 @@ export const UserLoginScreen = () => {
   }, [userInfo, navigate, redirect])
 
 
-  return loading ? <Loader/> : (
-    <Form form={ form }
-      onFinish={ formSubmitHandler }>
-      <Item name='email' label='Email:' rules={ [
-        {
-          required: true,
-          type: 'email',
-          message: 'Please input your email!',
-
-        },
-      ] }>
-        <Input placeholder='Email'/>
-      </Item>
-      <Item
-        label='Password:'
-        name='password'
-        rules={ [
+  return <>
+    <Meta screen='Login'/>
+    { loading ? <Loader/> : (
+      <Form form={ form }
+        onFinish={ formSubmitHandler }>
+        <Item name='email' label='Email:' rules={ [
           {
             required: true,
-            message: 'Please input your password!',
-          }
+            type: 'email',
+            message: 'Please input your email!',
+
+          },
         ] }>
-        <Input.Password placeholder='Password'/>
-      </Item>
-      <Item >
-        <Button htmlType='submit'>Submit</Button>
-      </Item>
-      { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
-      <Row>
-        <Col>
-          New Customer?
-          <Link to={ redirect ? `/register?redirect=${redirect}` : '/register' }>Register</Link>
-        </Col>
-      </Row>
-    </Form>
-  )
+          <Input placeholder='Email'/>
+        </Item>
+        <Item
+          label='Password:'
+          name='password'
+          rules={ [
+            {
+              required: true,
+              message: 'Please input your password!',
+            }
+          ] }>
+          <Input.Password placeholder='Password'/>
+        </Item>
+        <Item >
+          <Button htmlType='submit'>Submit</Button>
+        </Item>
+        { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
+        <Row>
+          <Col>
+            New Customer?
+            <Link to={ redirect ? `/register?redirect=${redirect}` : '/register' }>Register</Link>
+          </Col>
+        </Row>
+      </Form>
+    ) }
+  </>
 }

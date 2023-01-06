@@ -1,12 +1,14 @@
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { Alert, Button,Card, Col, Form,Image,Input,List,Rate,Row,Select,Tag,Typography } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link ,useParams } from 'react-router-dom'
 import { addToCart,createProductReview,listProductDetails } from 'redux/actions'
 import { PRODUCT_CREATE_REVIEW_RESET } from 'redux/reduxConstatns'
+
 
 const { Item } = Form
 const { TextArea } = Input
@@ -55,6 +57,7 @@ export const ProductScreen = () => {
       error
         ? <div>{ error }</div>
         : (<>
+          <Meta title={ name } screen=''/>
           <Row>
             <Col span={ 12 }>
               <Image

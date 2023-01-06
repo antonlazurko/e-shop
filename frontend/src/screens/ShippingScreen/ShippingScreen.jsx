@@ -1,5 +1,6 @@
 import {  Button, Form, Input,InputNumber, Typography } from 'antd'
 import { CheckoutSteps } from 'components/CheckoutSteps'
+import { Meta } from 'components/Meta'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveShippingAddress } from 'redux/actions'
@@ -18,6 +19,7 @@ export const ShippingScreen = () => {
   }
 
   return (<>
+    <Meta screen='Address'/>
     <CheckoutSteps step1 step2/>
     <Typography>SHIPPING</Typography>
     <Form form={ form } onFinish={ formSubmitHandler }

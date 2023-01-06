@@ -1,5 +1,6 @@
 import { Col, Row,  } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { Paginate } from 'components/Paginate'
 import { Product } from 'components/Product'
 import { TopProductsCarousel } from 'components/TopProductsCarousel'
@@ -7,6 +8,7 @@ import { mediaQueryies } from 'constants'
 import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import { Link } from 'react-router-dom'
 import { listProducts } from 'redux/actions'
 import { useQuery } from 'utils'
 
@@ -54,8 +56,9 @@ export const HomeScreen = () => {
   }, [dispatch,search, pageNumber])
 
   return <>
+    <Meta screen='Home'/>
     <h1>Latest products</h1>
-    { ! search && <TopProductsCarousel/> }
+    { ! search ? <TopProductsCarousel/> : <Link to='/'>Back</Link> }
     { loading ?
       <Loader/>
       :
