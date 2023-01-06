@@ -2,8 +2,8 @@ import { axios } from 'utils/axiosApi'
 
 
 export const ProductService = {
-  async getProducts(searhQuery){
-    return axios.get(`products?query=${searhQuery}`)
+  async getProducts(searhQuery, pageNumber){
+    return axios.get(`products?query=${searhQuery}&pageNumber=${pageNumber}`)
   },
   async getProductById(id){
     return axios.get(`products/${id}`)

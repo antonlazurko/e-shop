@@ -6,15 +6,17 @@ import { HttpCode, HttpErrorMessage } from '../helpers/constants.js'
 // @route GET /api/products
 // @access Public
 const getProducts = asyncHandler(async(req, res) => {
-    const keyword = req.query.query ? {
+    const pageSize = 8
+    const page = req.query.pageNumber
+    const query = req.query.query ? {
             name: {
                 $regex: req.query.query,
                 $options: 'i',
             }}
         : {}
-
-    const products = await Product.find({...keyword})
-    res.json(products)
+    const count = await Product.countDocuments({...query})
+    const products = await Product.find({...query}).limit(pageSize).skip(pageSize * (page - 1))
+    res.json({products, page, pages: Math.ceil(count / pageSize), count, pageSize})
 })
 
 // @desc Fetch single product

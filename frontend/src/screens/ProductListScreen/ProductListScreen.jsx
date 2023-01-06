@@ -1,19 +1,24 @@
 import { DeleteOutlined,EditOutlined,PlusOutlined,QuestionCircleOutlined } from '@ant-design/icons'
 import { Alert,Button, Modal,Popconfirm,Row,Table, Typography } from 'antd'
 import { Loader } from 'components/Loader'
+import { Paginate } from 'components/Paginate'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createProduct,deleteProduct,listProducts } from 'redux/actions'
 import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET,PRODUCT_UPDATE_RESET } from 'redux/reduxConstatns'
 import { ProductUpdateScreen } from 'screens/ProductUpdateScreen'
+import { useQuery } from 'utils'
 
 export const ProductListScreen = () => {
+  const query = useQuery()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [productEditId, setProductEditId] = useState(null)
+  const pageNumber = query.get('pageNumber') ? query.get('pageNumber')  : 1
+  const search = query.get('search') ? query.get('search')  : ''
 
   const {
-    productList:{ products, loading, error },
+    productList:{ products, loading, error, pages, pageSize, count },
     userLogin:{ userInfo },
     productDelete: { success: successDelete, error: errorDelete, loading: loadingDelete },
     productCreated: {
@@ -100,24 +105,24 @@ export const ProductListScreen = () => {
       setIsModalOpen(false)
     }
     if (successUpdate) {
-      dispatch(listProducts())
+      dispatch(listProducts(search, pageNumber))
       dispatch({ type: PRODUCT_UPDATE_RESET })
     }
     if (successCreate) {
       setProductEditId(createdProduct?._id)
       setIsModalOpen(true)
-      dispatch(listProducts())
+      dispatch(listProducts(search, pageNumber))
       dispatch({ type: PRODUCT_CREATE_RESET })
     }
     if(successDelete) {
-      dispatch(listProducts())
+      dispatch(listProducts(search, pageNumber))
       dispatch({ type: PRODUCT_DELETE_RESET })
     }
-  },[dispatch, navigate, userInfo?.isAdmin, successDelete, successCreate, successUpdate])
+  },[dispatch, navigate, userInfo?.isAdmin, successDelete, successCreate, successUpdate, pageNumber, search])
 
   useEffect(() => {
-    dispatch(listProducts())
-  }, [])
+    dispatch(listProducts(search, pageNumber))
+  }, [pageNumber, search])
 
 
   return (
@@ -135,7 +140,8 @@ export const ProductListScreen = () => {
             <Table
               columns={ columns }
               dataSource={ products }
-              rowKey={ ({ _id }) => _id }></Table>
+              rowKey={ ({ _id }) => _id }>
+            </Table>
           ) }
       <Modal
         width={ '60%' }
@@ -153,6 +159,7 @@ export const ProductListScreen = () => {
         title='Product Edit Modal' open={ isModalOpen } onCancel={ () => setIsModalOpen(false) }>
         <ProductUpdateScreen setIsModalOpen={ setIsModalOpen } id={ productEditId }/>
       </Modal>
+      <Paginate pages={ pages } pageNumber={ pageNumber } search={ search } pageSize={ pageSize } count={ count }/>
     </>
   )
 }

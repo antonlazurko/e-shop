@@ -20,10 +20,10 @@ import {
 } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
-export const listProducts = (searhQuery = '') => async (dispatch) => {
+export const listProducts = (searhQuery = '', pageNumber = 1) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
-    const data = await ProductService.getProducts(searhQuery)
+    const data = await ProductService.getProducts(searhQuery, pageNumber)
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL,
