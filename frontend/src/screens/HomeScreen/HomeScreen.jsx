@@ -1,7 +1,8 @@
-import { Col, Row } from 'antd'
+import { Col, Row,  } from 'antd'
 import { Loader } from 'components/Loader'
 import { Paginate } from 'components/Paginate'
 import { Product } from 'components/Product'
+import { TopProductsCarousel } from 'components/TopProductsCarousel'
 import { mediaQueryies } from 'constants'
 import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
@@ -18,7 +19,8 @@ export const HomeScreen = () => {
   const pageNumber = query.get('pageNumber') ? query.get('pageNumber')  : 1
 
   const dispatch = useDispatch()
-  const { loading, error, products, pages, count, pageSize } = useSelector(state => state.productList)
+  const {
+    productList: { loading, error, products, pages, count, pageSize } } = useSelector(state => state)
 
   const isLargeDesktopOrLaptop = useMediaQuery({
     query: largedesktopOrLaptop
@@ -53,6 +55,7 @@ export const HomeScreen = () => {
 
   return <>
     <h1>Latest products</h1>
+    { ! search && <TopProductsCarousel/> }
     { loading ?
       <Loader/>
       :

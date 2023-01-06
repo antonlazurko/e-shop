@@ -14,10 +14,11 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_TOP_FAIL,  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_REQUEST,
-  PRODUCT_UPDATE_SUCCESS,
-} from 'redux/reduxConstatns'
+  PRODUCT_UPDATE_SUCCESS } from 'redux/reduxConstatns'
 import { ProductService } from 'services/products.service'
 
 export const listProducts = (searhQuery = '', pageNumber = 1) => async (dispatch) => {
@@ -27,6 +28,19 @@ export const listProducts = (searhQuery = '', pageNumber = 1) => async (dispatch
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
+  }
+}
+
+export const listTopProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_TOP_REQUEST })
+    const data = await ProductService.getTopProducts()
+    dispatch({ type: PRODUCT_TOP_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({ type: PRODUCT_TOP_FAIL,
       payload: error.response && error.response.data.message ?
         error.data.message :
         error.message })

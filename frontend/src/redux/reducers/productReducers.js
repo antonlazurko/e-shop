@@ -16,6 +16,8 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_TOP_FAIL,  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -149,6 +151,25 @@ export const productReviewCreateReducer = (state = { }, { type, payload }) => {
   case PRODUCT_CREATE_REVIEW_RESET:
     return {
       product: {}
+    }
+  default:
+    return state
+  }
+}
+
+export const productTopRatingReducer = (state = { topProducts: [] }, { type, payload }) => {
+  switch (type) {
+  case PRODUCT_TOP_REQUEST:
+    return { loading: true, topProducts: [] }
+  case PRODUCT_TOP_SUCCESS:
+    return {
+      loading: false,
+      topProducts: payload,
+    }
+  case PRODUCT_TOP_FAIL:
+    return {
+      loading: false,
+      error: payload
     }
   default:
     return state

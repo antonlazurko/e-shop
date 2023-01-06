@@ -22,5 +22,8 @@ export const ProductService = {
   },
   async createProductReview(id, review, config){
     return axios.post(`products/${id}/reviews`, review, config)
-  }
+  },
+  async getTopProducts(){
+    return axios.get('products/top')
+  },
 }
