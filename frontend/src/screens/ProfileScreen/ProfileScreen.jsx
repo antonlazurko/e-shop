@@ -2,13 +2,15 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined
 } from '@ant-design/icons'
-import { Alert,Button, Col,Form, Input, Row,Table,Tag,Typography,notification  } from 'antd'
+import { Alert,Button, Col,Form, Input, notification,Row,Table,Tag,Typography  } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link,useNavigate } from 'react-router-dom'
 import { getUserDetails, myOrdersList,updateUserProfile } from 'redux/actions'
 import { USER_UPDATE_PROFILE_RESET } from 'redux/reduxConstatns'
+
 
 
 const { Item } = Form
@@ -124,72 +126,75 @@ export const ProfileScreen = () => {
   }, [userInfo, navigate, dispatch, user, form, success])
 
 
-  return loading ?
-    <Loader/>
-    :
-    (
-      <>
-        <Typography>User Profile</Typography>
-        <Row>
-          <Col span={ 9 }>
-            <Typography>Update details</Typography>
-            { success && <Alert closable={ true } banner={ true } message='Profile Updated' type='success' /> }
-            { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
-            <Form form={ form }
-              name='update-form'
-              onFinish={ formSubmitHandler }>
-              <Item name= { 'name' } label='Name:'>
-                <Input/>
-              </Item>
-              <Item name= { 'email' } label='Name:' rules={ [
-                {
-                  type: 'email',
-                  message: 'Please input correct email!'
-                },
-              ] }>
-                <Input/>
-              </Item>
-              <Item
-                label='Password:' name='password'>
-                <Input placeholder='Password' onChange={ e => setPassword(e.target.value) }/>
-              </Item>
-              { !!password && <Item
-                label='Confirm password:'
-                name='confirmPassword'
-                rules={ [
+  return <>
+    <Meta screen='Product'/>
+    { loading ?
+      <Loader/>
+      :
+      (
+        <>
+          <Typography>User Profile</Typography>
+          <Row>
+            <Col span={ 9 }>
+              <Typography>Update details</Typography>
+              { success && <Alert closable={ true } banner={ true } message='Profile Updated' type='success' /> }
+              { error && <Alert closable={ true } banner={ true } message={ error } type='error' /> }
+              <Form form={ form }
+                name='update-form'
+                onFinish={ formSubmitHandler }>
+                <Item name= { 'name' } label='Name:'>
+                  <Input/>
+                </Item>
+                <Item name= { 'email' } label='Name:' rules={ [
                   {
-                    required: true,
-                    message: 'Please confirm your password!',
+                    type: 'email',
+                    message: 'Please input correct email!'
                   },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue('password') === value) {
-                        return Promise.resolve()
-                      }
-                      return Promise.reject(new Error('The two passwords that you entered do not match!'))
-                    },
-                  }),
                 ] }>
-                <Input.Password placeholder='Confirm password'/>
-              </Item> }
-              <Item>
-                <Button htmlType='submit'>
-                  Update
-                </Button>
-              </Item>
-            </Form>
-          </Col>
-          <Col span={ 9 }>
-            <Typography>My Orders</Typography>
-            { ordersLoading ? <Loader/> : ordersError ? <Alert closable={ true } banner={ true } message={ error } type='error' /> : (
-              <Table
-                rowKey={ ({ _id }) => _id }
-                columns={ myOrdersTableColumns }
-                dataSource={ orders }>
-              </Table>
-            ) }
-          </Col>
-        </Row>
-      </>
-    )
+                  <Input/>
+                </Item>
+                <Item
+                  label='Password:' name='password'>
+                  <Input placeholder='Password' onChange={ e => setPassword(e.target.value) }/>
+                </Item>
+                { !!password && <Item
+                  label='Confirm password:'
+                  name='confirmPassword'
+                  rules={ [
+                    {
+                      required: true,
+                      message: 'Please confirm your password!',
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue('password') === value) {
+                          return Promise.resolve()
+                        }
+                        return Promise.reject(new Error('The two passwords that you entered do not match!'))
+                      },
+                    }),
+                  ] }>
+                  <Input.Password placeholder='Confirm password'/>
+                </Item> }
+                <Item>
+                  <Button htmlType='submit'>
+                    Update
+                  </Button>
+                </Item>
+              </Form>
+            </Col>
+            <Col span={ 9 }>
+              <Typography>My Orders</Typography>
+              { ordersLoading ? <Loader/> : ordersError ? <Alert closable={ true } banner={ true } message={ error } type='error' /> : (
+                <Table
+                  rowKey={ ({ _id }) => _id }
+                  columns={ myOrdersTableColumns }
+                  dataSource={ orders }>
+                </Table>
+              ) }
+            </Col>
+          </Row>
+        </>
+      ) }
+  </>
 }

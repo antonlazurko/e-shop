@@ -1,16 +1,26 @@
-import { PlusOutlined,QuestionCircleOutlined } from '@ant-design/icons'
-import { Alert,Button, Popconfirm,Table, Typography } from 'antd'
+import { DeleteOutlined,EditOutlined,PlusOutlined,QuestionCircleOutlined } from '@ant-design/icons'
+import { Alert,Button, Modal,Popconfirm,Row,Table, Typography } from 'antd'
 import { Loader } from 'components/Loader'
-import { useEffect } from 'react'
+import { Meta } from 'components/Meta'
+import { Paginate } from 'components/Paginate'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createProduct,deleteProduct,listProducts } from 'redux/actions'
-import { PRODUCT_CREATE_RESET } from 'redux/reduxConstatns'
+import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET,PRODUCT_UPDATE_RESET } from 'redux/reduxConstatns'
+import { ProductUpdateScreen } from 'screens/ProductUpdateScreen'
+import { useQuery } from 'utils'
+
 
 export const ProductListScreen = () => {
+  const query = useQuery()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [productEditId, setProductEditId] = useState(null)
+  const pageNumber = query.get('pageNumber') ? query.get('pageNumber')  : 1
+  const search = query.get('search') ? query.get('search')  : ''
 
   const {
-    productList:{ products, loading, error },
+    productList:{ products, loading, error, pages, pageSize, count },
     userLogin:{ userInfo },
     productDelete: { success: successDelete, error: errorDelete, loading: loadingDelete },
     productCreated: {
@@ -18,7 +28,11 @@ export const ProductListScreen = () => {
       error: errorCreate,
       success: successCreate,
       product: createdProduct,
-    } } = useSelector(state => state)
+    },
+    productUpdate:{
+      loading: updateLoading,
+      error: updateError,
+      success: successUpdate } } = useSelector(state => state)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -28,6 +42,10 @@ export const ProductListScreen = () => {
   }
   const createProductHandler = (value) => {
     dispatch(createProduct())
+  }
+  const productEditHandler = (id) =>{
+    setProductEditId(id)
+    setIsModalOpen(true)
   }
 
   const columns = [
@@ -59,10 +77,10 @@ export const ProductListScreen = () => {
     },
     {
       title: '',
-      key: 'linkToUser',
-      dataIndex: 'linkToUser',
-      render: (_, { _id }) => (<>
-        <Link to={ `/admin/product/${_id}/edit` }>EDIT</Link>
+      key: 'productActions',
+      dataIndex: 'productActions',
+      render: (_, { _id }) => (<Row justify='space-between'>
+        <Button type='text' size='small' icon={ <EditOutlined /> } onClick={ () => productEditHandler(_id) }>EDIT</Button>
         <Popconfirm
           placement='top'
           title='Are you shure you want to delete this product?'
@@ -77,31 +95,47 @@ export const ProductListScreen = () => {
             />
           }
         >
-          <Button>DELETE</Button>
+          <Button size='small' danger icon={ <DeleteOutlined /> }>DELETE</Button>
         </Popconfirm>
-      </>)
+      </Row>)
     },
   ]
 
   useEffect(() => {
-    dispatch({ type: PRODUCT_CREATE_RESET })
     if (!userInfo?.isAdmin) {
       navigate('/login')
+      setIsModalOpen(false)
+    }
+    if (successUpdate) {
+      dispatch(listProducts(search, pageNumber))
+      dispatch({ type: PRODUCT_UPDATE_RESET })
     }
     if (successCreate) {
-      navigate(`/admin/product/${createdProduct?._id}/edit`)
-    } else {
-      dispatch(listProducts())
+      setProductEditId(createdProduct?._id)
+      setIsModalOpen(true)
+      dispatch(listProducts(search, pageNumber))
+      dispatch({ type: PRODUCT_CREATE_RESET })
     }
-  },[dispatch, navigate, userInfo?.isAdmin,successDelete, successCreate, createdProduct?._id])
+    if(successDelete) {
+      dispatch(listProducts(search, pageNumber))
+      dispatch({ type: PRODUCT_DELETE_RESET })
+    }
+  },[dispatch, navigate, userInfo?.isAdmin, successDelete, successCreate, successUpdate, pageNumber, search])
+
+  useEffect(() => {
+    dispatch(listProducts(search, pageNumber))
+  }, [pageNumber, search])
+
 
   return (
     <>
+      <Meta screen='Product List'/>
       <Typography>Products</Typography>
       <Button icon={ <PlusOutlined /> } onClick={ createProductHandler }>Create Product</Button>
       { errorDelete && <Alert banner={ true } message={ errorDelete } type='error'/> }
       { errorCreate && <Alert banner={ true } message={ errorCreate } type='error'/> }
-      { loading || loadingDelete || loadingCreate ?
+      { updateError && <Alert banner={ true } message={ updateError } type='error'/> }
+      { loading || loadingDelete || loadingCreate || updateLoading?
         <Loader/> :
         error ?
           <Alert banner={ true } message={ error } type='error'/> :
@@ -109,8 +143,26 @@ export const ProductListScreen = () => {
             <Table
               columns={ columns }
               dataSource={ products }
-              rowKey={ ({ _id }) => _id }></Table>
+              rowKey={ ({ _id }) => _id }>
+            </Table>
           ) }
+      <Modal
+        width={ '60%' }
+        destroyOnClose={ true }
+        footer={ [
+          <Button type='primary' form='productEdit' key='submit' htmlType='submit'>
+            Update
+          </Button>,
+          <Button type='text' key='button' htmlType='button' onClick={ () => {
+            setIsModalOpen(false)
+            setProductEditId(null)} }>
+            Cancel
+          </Button>
+        ] }
+        title='Product Edit Modal' open={ isModalOpen } onCancel={ () => setIsModalOpen(false) }>
+        <ProductUpdateScreen setIsModalOpen={ setIsModalOpen } id={ productEditId }/>
+      </Modal>
+      <Paginate pages={ pages } pageNumber={ pageNumber } search={ search } pageSize={ pageSize } count={ count }/>
     </>
   )
 }

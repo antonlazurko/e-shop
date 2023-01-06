@@ -1,8 +1,11 @@
 import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
-import connectDB from './config/db.js'
 import colors from 'colors'
+import morgan from 'morgan'
+import rateLimit from 'express-rate-limit'
+
+import connectDB from './config/db.js'
 import { notFound, errorHandler } from './middleware/error.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -14,7 +17,27 @@ connectDB()
 
 const app = express()
 
-app.use(express.json())
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    handler: (req, res, next) => {
+        return res.status(HttpCode.BAD_REQUEST).json({
+            status: "error",
+            code: HttpCode.BAD_REQUEST,
+            data: "Bad request",
+            message: "Too many requests, please try again later.",
+        });
+    },
+});
+
+const formatsLogger = process.env.NODE_ENV === 'development' ? 'dev' : 'short';
+
+app.use(morgan(formatsLogger))
+
+
+app.use(express.json({ limit: 10000 }))
+
+app.use('/api/', apiLimiter)
 
 app.get('/', (req, res) => {
     res.send('API is running..')})

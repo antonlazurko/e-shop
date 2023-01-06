@@ -1,5 +1,6 @@
 import {  Alert, Button,Card,Col, Image, List, Row, Space,Typography } from 'antd'
 import { Loader } from 'components/Loader'
+import { Meta } from 'components/Meta'
 import { PayPalButtonWrapper } from 'components/PayPalButtonWrapper'
 import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
@@ -8,6 +9,7 @@ import { Link,  useNavigate,useParams } from 'react-router-dom'
 import { deliverOrder,getOrderDetails, payOrder } from 'redux/actions'
 import { ORDER_DELIVER_RESET,ORDER_PAY_RESET } from 'redux/reduxConstatns'
 import { PaymentService } from 'services/payment.service'
+
 
 const { Item : ListItem } = List
 
@@ -64,8 +66,9 @@ export const OrderScreen = () => {
     }
   }, [dispatch, id, navigate, order?._id, successDeliver, successPay, userInfo])
 
-  return (
-    loading ?
+  return (<>
+    <Meta screen='Order'/>
+    { loading ?
       <Loader/>
       : error ?
         <Alert closable={ true } banner={ true } message={ error } type='error'/>
@@ -179,5 +182,5 @@ export const OrderScreen = () => {
             }
           </List>
         )
-  )
+    }</>)
 }

@@ -1,5 +1,6 @@
 import {  Alert,Button, Card,Col, Image, List, Row, Space,Typography } from 'antd'
 import { CheckoutSteps } from 'components/CheckoutSteps'
+import { Meta } from 'components/Meta'
 import { NO_DATA } from 'constants'
 import { useEffect } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
@@ -44,6 +45,7 @@ export const PlaceOrderScreen = () => {
 
   return (
     <>
+      <Meta screen='Place Order'/>
       <CheckoutSteps step1 step2 step3 step4/>
       <Row>
         <Col span={ 10 }>

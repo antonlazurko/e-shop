@@ -2,8 +2,8 @@ import { axios } from 'utils/axiosApi'
 
 
 export const ProductService = {
-  async getProducts(){
-    return axios.get('products')
+  async getProducts(searhQuery, pageNumber){
+    return axios.get(`products?query=${searhQuery}&pageNumber=${pageNumber}`)
   },
   async getProductById(id){
     return axios.get(`products/${id}`)
@@ -19,5 +19,11 @@ export const ProductService = {
   },
   async uploadProductImage(formData, config){
     return axios.post('/upload', formData, config)
-  }
+  },
+  async createProductReview(id, review, config){
+    return axios.post(`products/${id}/reviews`, review, config)
+  },
+  async getTopProducts(){
+    return axios.get('products/top')
+  },
 }

@@ -1,5 +1,6 @@
 import { HomeTwoTone, ShoppingTwoTone, ThunderboltTwoTone } from '@ant-design/icons'
 import { Button,Col,Dropdown,Layout, Row } from 'antd'
+import { HeaderSearch } from 'components/HeaderSearch'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logout } from 'redux/actions'
@@ -29,8 +30,11 @@ export const AppHeader = () => {
 
   return (<Header>
     <Row>
-      <Col span={ 18 }>
+      <Col span={ 14 }>
         <Link to='/'><HomeTwoTone />E-Shop</Link>
+      </Col>
+      <Col span={ 4 }>
+        <HeaderSearch/>
       </Col>
       <Col span={ 6 }>
         { userInfo ? (
