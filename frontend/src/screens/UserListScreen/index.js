@@ -1,1 +1,1 @@
-export * from './UserListScreen'
+export { UserListScreen as default } from './UserListScreen'
