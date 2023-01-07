@@ -1,1 +1,1 @@
-export * from './CartScreen'
+export { CartScreen as default } from './CartScreen'

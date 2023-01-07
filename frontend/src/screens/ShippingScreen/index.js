@@ -1,1 +1,1 @@
-export * from './ShippingScreen'
+export { ShippingScreen as default } from './ShippingScreen'

@@ -1,1 +1,1 @@
-export * from './UserEditScreen'
+export { UserEditScreen as default } from './UserEditScreen'

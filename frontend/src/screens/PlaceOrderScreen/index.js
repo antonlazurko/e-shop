@@ -1,1 +1,1 @@
-export * from './PlaceOrderScreen'
+export { PlaceOrderScreen as default } from './PlaceOrderScreen'

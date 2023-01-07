@@ -1,1 +1,1 @@
-export * from './OrderScreen'
+export { OrderScreen as default } from './OrderScreen'

@@ -1,22 +1,22 @@
 import { lazy } from 'react'
-import { CartScreen } from 'screens/CartScreen'
-import { HomeScreen } from 'screens/HomeScreen'
-import { OrderListScreen } from 'screens/OrderListScreen'
-import { OrderScreen } from 'screens/OrderScreen'
-import { PaymentScreen } from 'screens/PaymentScreen'
-import { PlaceOrderScreen } from 'screens/PlaceOrderScreen'
-import { ProductListScreen } from 'screens/ProductListScreen'
-import { ProductScreen } from 'screens/ProductScreen'
-import { ProfileScreen } from 'screens/ProfileScreen'
-import { ShippingScreen } from 'screens/ShippingScreen'
-import { UserEditScreen } from 'screens/UserEditScreen'
-import { UserListScreen } from 'screens/UserListScreen'
-import { UserLoginScreen } from 'screens/UserLoginScreen'
-import { UserRegisterScreen } from 'screens/UserRegisterScreen'
 
 import { ProtectedRoute } from './ProtectedRoute'
 
 const NotFoundScreen = lazy(() =>import('screens/NotFoundScreen'))
+const CartScreen = lazy(() =>import('screens/CartScreen'))
+const HomeScreen = lazy(() =>import('screens/HomeScreen'))
+const OrderListScreen = lazy(() =>import('screens/OrderListScreen'))
+const OrderScreen = lazy(() =>import('screens/OrderScreen'))
+const ProductListScreen = lazy(() =>import('screens/ProductListScreen'))
+const ProductScreen = lazy(() =>import('screens/ProductScreen'))
+const ProfileScreen = lazy(() =>import('screens/ProfileScreen'))
+const UserEditScreen = lazy(() =>import('screens/UserEditScreen'))
+const UserListScreen = lazy(() =>import('screens/UserListScreen'))
+const UserLoginScreen = lazy(() =>import('screens/UserLoginScreen'))
+const UserRegisterScreen = lazy(() =>import('screens/UserRegisterScreen'))
+const PaymentScreen = lazy(() =>import('screens/PaymentScreen'))
+const ShippingScreen = lazy(() =>import('screens/ShippingScreen'))
+const PlaceOrderScreen = lazy(() =>import('screens/PlaceOrderScreen'))
 
 const routes = [{
   path: '/',

@@ -1,1 +1,1 @@
-export * from './PaymentScreen'
+export { PaymentScreen as default } from './PaymentScreen'
