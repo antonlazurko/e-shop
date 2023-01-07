@@ -1,4 +1,4 @@
-import {  Alert, Button,Card,Col, Image, List, Row, Space,Typography } from 'antd'
+import {  Alert, Button,Card,Col, Image, List, notification,Row,Space,Typography } from 'antd'
 import { Loader } from 'components/Loader'
 import { Meta } from 'components/Meta'
 import { PayPalButtonWrapper } from 'components/PayPalButtonWrapper'
@@ -6,8 +6,8 @@ import { NO_DATA } from 'constants'
 import { useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link,  useNavigate,useParams } from 'react-router-dom'
-import { deliverOrder,getOrderDetails, payOrder } from 'redux/actions'
-import { ORDER_DELIVER_RESET,ORDER_PAY_RESET } from 'redux/reduxConstatns'
+import { deleteOrder,deliverOrder,getOrderDetails, payOrder } from 'redux/actions'
+import { ORDER_DELETE_RESET,ORDER_DELIVER_RESET,ORDER_PAY_RESET } from 'redux/reduxConstatns'
 import { PaymentService } from 'services/payment.service'
 
 
@@ -16,12 +16,16 @@ const { Item : ListItem } = List
 export const OrderScreen = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const {
+    userLogin: { userInfo },
+    orderDetails: { order = {}, loading, error },
+    orderPay: { success: successPay },
+    orderDeliver: { success: successDeliver, loading: loadingDeliver },
+    orderDelete: { success: successOrderDelete, loading: loadingOrderDelete, }
+  } = useSelector(state => state)
 
-  const { order = {}, loading, error } = useSelector(state => state.orderDetails)
-  const { success: successPay } = useSelector(state => state.orderPay)
-  const { success: successDeliver, loading: loadingDeliver } = useSelector(state => state.orderDeliver)
   const [clientId, setClientId] = useState(null)
+
   const {
     shippingAddress,
     paymentMethod,
@@ -37,6 +41,8 @@ export const OrderScreen = () => {
     deliveredAt,
     _id } = order
 
+  const isCurrentUsersOrder = userInfo?._id === user?._id
+
   const dispatch = useDispatch()
 
   const successPaymentHandler = (paymentResult) => {
@@ -45,10 +51,21 @@ export const OrderScreen = () => {
   const deliverHandler = () => {
     dispatch(deliverOrder(_id))
   }
-
+  const deleteOrderHandler = () => {
+    dispatch(deleteOrder(_id))
+  }
   useEffect(() => {
     if (!userInfo) {
       navigate('/login')
+    }
+    if (successOrderDelete) {
+      notification.info({
+        message: 'Order removed!'
+      })
+      navigate('/')
+      dispatch({
+        type: ORDER_DELETE_RESET
+      })
     }
     (async() => {
       const clientId = await PaymentService.getPayPalClientID()
@@ -64,7 +81,7 @@ export const OrderScreen = () => {
       })
       dispatch(getOrderDetails(id))
     }
-  }, [dispatch, id, navigate, order?._id, successDeliver, successPay, userInfo])
+  }, [dispatch, id, navigate, order?._id, successDeliver, successPay, userInfo, successOrderDelete])
 
   return (<>
     <Meta screen='Order'/>
@@ -167,7 +184,7 @@ export const OrderScreen = () => {
                 </Row> }
               </Card>
             </ListItem>
-            { !isPaid && clientId && (
+            { !isPaid && clientId && isCurrentUsersOrder && (
               <PayPalButtonWrapper
                 clientId={ clientId }
                 amount={ totalPrice }
@@ -175,9 +192,13 @@ export const OrderScreen = () => {
                 successPaymentHandler={ successPaymentHandler }
               />
             ) }
-            { loadingDeliver && <Loader/> }
+            { loadingDeliver && !loadingOrderDelete && <Loader/> }
             { isPaid && userInfo?.isAdmin && !isDelivered &&(
               <Button onClick={ deliverHandler }>Mark as delivered</Button>
+            )
+            }
+            { !isPaid && userInfo?.isAdmin && !isDelivered &&(
+              <Button onClick={ deleteOrderHandler }>Delete Order</Button>
             )
             }
           </List>
