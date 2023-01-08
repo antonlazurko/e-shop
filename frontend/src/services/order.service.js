@@ -19,4 +19,7 @@ export const OrderService = {
   async putDeliverOrder(id, config){
     return axios.put(`orders/${id}/deliver`, {}, config)
   },
+  async deleteOrder(id, config){
+    return axios.delete(`orders/${id}`, config)
+  },
 }

@@ -7,7 +7,9 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
-  ORDER_DELIVER_FAIL, ORDER_DELIVER_REQUEST,
+  ORDER_DELETE_FAIL,
+  ORDER_DELETE_REQUEST,
+  ORDER_DELETE_SUCCESS,  ORDER_DELIVER_FAIL, ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -206,5 +208,27 @@ export const deliverOrder = (orderId) => async(dispatch, getState) => {
       type: ORDER_DELIVER_FAIL,
       payload: message
     })
+  }
+}
+
+export const deleteOrder = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_DELETE_REQUEST
+    })
+    const { userLogin: { userInfo } } = getState()
+    const config = {
+      headers: { 'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}` }
+    }
+    const data = await OrderService.deleteOrder(id, config)
+
+    dispatch({ type: ORDER_DELETE_SUCCESS, payload: data })
+
+  } catch (error) {
+    dispatch({ type: ORDER_DELETE_FAIL,
+      payload: error.response && error.response.data.message ?
+        error.data.message :
+        error.message })
   }
 }

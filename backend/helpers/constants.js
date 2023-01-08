@@ -14,6 +14,7 @@ export const HttpCode = {
     NO_ORDER_ITEMS: 'No order items',
     ORDERS_NOT_FOUND: 'Orders not found',
     ORDER_NOT_FOUND: 'Order not found',
+    ORDER_NOT_FOUND: 'Order not found',
     PRODUCT_NOT_FOUND: 'Product not found',
     USER_NOT_FOUND: 'User not found',
     USER_ALREADY_EXIST: 'User already exists',
